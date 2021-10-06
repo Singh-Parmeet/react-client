@@ -14,10 +14,12 @@ sub{vertical-align:text-bottom}
 input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit;*font-size:100%}
 legend{color:#000}
 #yui3-css-stamp.cssreset{display:none}
+/***************disabled the browser padding************/
 *{
     margin:0;
     padding:0;
 }
+/****************** Main container************/
 .co__container{
     width: 100;
     height: 100vh;
@@ -26,7 +28,7 @@ legend{color:#000}
     background-image: url("../Images/background.jpg");
     align-items: center;
 }
-
+/**************** Box*******************/
 .co__checkout {
 
     width: 90%;
@@ -35,18 +37,18 @@ legend{color:#000}
     background-color: #ffffff;
 
 }
-
+/**************** Heading section**************/
 .co__checkout__top{
     display: flex;
     justify-content: space-between;
     padding: 10px 10px 15px 10px;
 }
-
+/*****************Heading Font***************/
 .co__checkout__heading{
         font-size: 18px;
         font-family: serif;
 }
-
+/***********Badges***************/
 .co__checkout__badges{
     display: flex;
     flex: 0.8;
@@ -69,6 +71,7 @@ hr.co__hr{
     width:100%;
     border-top:1px solid #eaeaea;
 }
+/********************Complete payment section**************/
 .co__checkout__down{
     display:flex;
     color:gray;
@@ -83,9 +86,7 @@ hr.co__hr{
     font-size: 15px;
     padding: 12px 0px 0px;
 }
-.co__checkout__items{
-    flex:0.4;
-}
+/*********************Complete Card Details*****************/
 .co__checkout__cardDetails{
     display: flex;
     justify-content: space-evenly;
@@ -108,6 +109,7 @@ hr.co__hr{
 .co__checkout__cardImage p{
     font-size: 13px;
 }
+/*********************Complete Form Part*****************/
 .co__checkout__form{
     display: flex;
     justify-content: center;
@@ -136,6 +138,10 @@ form input{
     background-color: #68c153;
     color: white;
     margin-top: 22px;
+}
+/*********************Complete Right Items Part*****************/
+.co__checkout__items{
+    flex:0.4;
 }
 .co__checkout__itemsSection{
     flex:0.4;
@@ -170,7 +176,7 @@ form input{
     background: #d6d6d6;
     margin-right: 10px;
 }
-
+/*********************Complete Total Part*****************/
 .co__checkout__itemDetails h2,
 .co__checkout__finalPrice h2,
 .co__checkout__amount h3{
@@ -197,7 +203,7 @@ form input{
     font-weight:700;
     color:#000;
 }
-/*   Media Queries  */
+/*********************Media Queries*****************/
 @media screen and (max-width:992px){
     .co__checkout__paymentOptions{
         flex:1;
