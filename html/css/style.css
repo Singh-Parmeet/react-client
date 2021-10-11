@@ -1,7 +1,9 @@
+/***************disabled the browser padding************/
 *{
     margin:0;
     padding:0;
 }
+/****************** Main container************/
 .co__container{
     width: 100;
     height: 100vh;
@@ -10,7 +12,7 @@
     background-image: url("../images/background.jpg");
     align-items: center;
 }
-
+/**************** Box*******************/
 .co__checkout {
 
     width: 90%;
@@ -19,18 +21,18 @@
     background-color: #ffffff;
 
 }
-
+/**************** Heading section**************/
 .co__checkout__top{
     display: flex;
     justify-content: space-between;
     padding: 10px 10px 15px 10px;
 }
-
+/*****************Heading Font***************/
 .co__checkout__heading{
         font-size: 18px;
         font-family: serif;
 }
-
+/***********Badges***************/
 .co__checkout__badges{
     display: flex;
     flex: 0.8;
@@ -53,6 +55,7 @@ hr.co__hr{
     width:100%;
     border-top:1px solid #eaeaea;
 }
+/********************Complete payment section**************/
 .co__checkout__down{
     display:flex;
     color:gray;
@@ -60,23 +63,27 @@ hr.co__hr{
 }
 .co__checkout__paymentOptions {
     flex:0.6;
+    margin: 20px;
 }
 .co__checkout__paymentOptions h2{
     margin: 7px;
     font-size: 15px;
     padding: 12px 0px 0px;
 }
-.co__checkout__items{
-    flex:0.4;
-}
+/*********************Complete Card Details*****************/
 .co__checkout__cardDetails{
     display: flex;
     justify-content: space-evenly;
     margin-top: 20px;
 }
+.co__checkout__cardImage{
+    padding: 13px;
+}
 
 .co__checkout__cardImage img{
     width: 230px;
+    max-width: 100%;
+    object-fit: contain;
 }
 .co__checkout__cardImage--selected {
     background-color: #f7f7f7;
@@ -86,6 +93,7 @@ hr.co__hr{
 .co__checkout__cardImage p{
     font-size: 13px;
 }
+/*********************Complete Form Part*****************/
 .co__checkout__form{
     display: flex;
     justify-content: center;
@@ -114,6 +122,10 @@ form input{
     background-color: #68c153;
     color: white;
     margin-top: 22px;
+}
+/*********************Complete Right Items Part*****************/
+.co__checkout__items{
+    flex:0.4;
 }
 .co__checkout__itemsSection{
     flex:0.4;
@@ -148,7 +160,7 @@ form input{
     background: #d6d6d6;
     margin-right: 10px;
 }
-
+/*********************Complete Total Part*****************/
 .co__checkout__itemDetails h2,
 .co__checkout__finalPrice h2,
 .co__checkout__amount h3{
@@ -175,3 +187,31 @@ form input{
     font-weight:700;
     color:#000;
 }
+/*********************Media Queries*****************/
+@media screen and (max-width:992px){
+    .co__checkout__paymentOptions{
+        flex:1;
+    }
+    .co__checkout__itemsSection{
+        flex:1;
+    }
+}
+@media (max-width:600px){
+    .co__container {
+        height:auto;
+    }
+    .co__checkout__down{
+        flex-direction:column-reverse;
+    }
+    .co__checkout__badges{
+        display:none;
+    }
+   
+}
+@media (max-width: 387px){
+    .co__checkout__cardDetails{
+    flex-direction:column;
+    align-items: center;
+    }
+}
+
