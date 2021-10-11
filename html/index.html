@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+</head>
+    <body>
+        <!-- Main container file-->
+        <div class="co__container">
+         <div class="co__checkout">
+             <div class="co__checkout__top">
+                 <!--Heading container-->
+                <h1 class="co__checkout__heading">
+                    Checkout
+                </h1>
+                <div class="co__checkout__badges">
+                    <p>Shipping  </p>
+                    <p class="co__checkout__badges--active">Payment Method  </p>
+                    <p>Confirmation </p>
+                </div>
+                <!--Closing Icon-->
+                <div class="co__checkout__close">
+                    <i class="fa fa-window-close"></i>
+                 </div>
+             </div>
+             <!--Horizontal Line-->
+             <hr class="co__hr"/>
+             <!--1st sub conatiner for wallet options-->
+             <div class="co__checkout__down">
+              <div class="co__checkout__paymentOptions">
+                  <h2>
+                      Wallet
+                  </h2>
+                  <hr class="co__hr"/>
+                  <!--Wallet images-->
+                  <div class="co__checkout__cardDetails">
+                      <div class="co__checkout__cardImage">
+                          <img src="../html/images/cards/discover.png">
+                          <p>Ending with 8899</p>
+                      </div>
+                      <div class="co__checkout__cardImage co__checkout__cardImage--selected">
+                        <img src="../html/images/cards/mastercard.png">
+                        <p>Ending with 8899</p>
+                    </div>
+                    <div class="co__checkout__cardImage">
+                        <img src="../html/images/cards/visa.png">
+                        <p>Ending with 8899</p>
+                    </div>
+                  </div>
+                  <!--2nd sub container for new card-->
+                  <h2 class>
+                      New Card
+                  </h2>
+                  <hr class="co__hr"/>
+                  <div class="co__checkout__form">
+                      <!--Form-->
+                      <form>
+                    <input type="text" id="Name on card" placeholder="Name on card"><br>
+                    <input type="text" id="card number" placeholder="xxxx.xxxx.xxxx.xxxx"><br>
+                    <div class="co__checkout__expiry">
+                    <input class="co__mr" type="text" id="expiry date" placeholder="MM/YY"><br>
+                    <input type="text" id="CVV number" placeholder="CVV"><br>
+                    </div>
+                    <button class="co__button" type="button">Continue</button>
+                    </form>
+                </div>
+            </div>
+            <!--3rd sub container for items-->
+            <div class="co__checkout__itemsSection">
+                <div class="co__checkout__allItems">
+                    <div class="co__checkout__item">
+                        <!--1st item details-->
+                        <div class="co__checkout__itemDetails">
+                            <img src="../html/images/products/mobile-holder.jpg" alt="mobile-holder">
+                            <div>
+                                <h2>Mobile-holder</h2>
+                                <p class="co__checkout__itemColor">Black</p>
+                                <p class="co__checkout__itemQuantity">Quantity : 1</p>
+                            </div>
+                        </div>
+                        <div class="co__checkout__finalPrice">
+                            <h2>$10.00</h2>
+                        </div> 
+                    </div>
+                    <hr class="co__hr"/>
+                    <!--2nd item details-->
+                    <div class="co__checkout__item">
+                        <div class="co__checkout__itemDetails">
+                            <img src="../html/images/products/rado.jpg" alt="rado-watch">
+                            <div>
+                                <h2>Rado Watch</h2>
+                                <p class="co__checkout__itemColor">Black</p>
+                                <p class="co__checkout__itemQuantity">Quantity : 1</p>
+                            </div>
+                        </div>
+                        <div class="co__checkout__finalPrice">
+                            <h2>$10.00</h2>
+                        </div> 
+                    </div>
+                    <hr class="co__hr"/>
+                    <!--3rd item details-->
+                    <div class="co__checkout__item">
+                        <div class="co__checkout__itemDetails">
+                            <img src="../html/images/products/usb-c-2-micro.jpeg" alt="usb-c-2-micro">
+                            <div>
+                                <h2>C Type Micro Convertor</h2>
+                                <p class="co__checkout__itemColor">Black</p>
+                                <p class="co__checkout__itemQuantity">Quantity : 1</p>
+                            </div>
+                        </div>
+                        <div class="co__checkout__finalPrice">
+                            <h2>$10.00</h2>
+                        </div> 
+                    </div>
+                    <hr class="co__hr"/>
+                    <!--4th item details-->
+                    <div class="co__checkout__item">
+                        <div class="co__checkout__itemDetails">
+                            <img src="../html/images/products/hard-case.jpg" alt="hard-case">
+                            <div>
+                                <h2>Mobile Case</h2>
+                                <p class="co__checkout__itemColor">Black</p>
+                                <p class="co__checkout__itemQuantity">Quantity : 1</p>
+                            </div>
+                        </div>
+                        <div class="co__checkout__finalPrice">
+                            <h2>$10.00</h2>
+                        </div> 
+                    </div>
+                </div>
+                <!--Total summary part-->            
+                <div class="co__checkout__Subtotal">
+                    <hr class="co__hr"/>
+                    <div class="co__checkout__amount">
+                        <h3>Sub Total</h3>
+                        <h3>$100.00</h3>
+                    </div>
+                    <div class="co__checkout__amount">
+                        <h3>Shipping</h3>
+                        <h3>$10.00</h3>
+                    </div>
+                    <div class="co__checkout__amount">
+                        <h3>Taxes</h3>
+                        <h3>$5.00</h3>
+                    </div>
+                    <hr class="co__hr"/>
+                    <div class="co__checkout__amount co__checkout__totalAmount">
+                        <h3>Total</h3>
+                        <h3>$115.00</h3>
+                    </div>
+                </div>
+            </div>
+             </div>
+        </div>
+    </div>
+    </body>
+</html>
