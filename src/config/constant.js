@@ -1,4 +1,3 @@
-export const PUBLIC_IMAGE_FOLDER = '/images';
 export const BANNER_DEFAULT = '/images/default.png';
 
 export const Banner = [{
