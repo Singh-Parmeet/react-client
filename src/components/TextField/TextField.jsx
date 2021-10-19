@@ -4,31 +4,35 @@ import style from './style';
 
 const TextField = (props) => {
   const {
-    placeholder, labels, active, error,
+    value, onChangeHandler, label, notActive, error, onBlurHandler,
   } = props;
   const errorStyle = error ? style.errorInput : {};
   // const errorStyle2 = error2 ? style.errorInput1 : {};
   return (
-    <>
-      <div>
-        <h3>{labels}</h3>
-        <input style={{ ...style.base, ...errorStyle }} type="text" value={placeholder} disabled={active} />
-        {
-          error && (
-            <div style={style.error}>{error}</div>
-          )
-        }
-      </div>
-    </>
+    <div>
+      <h2>{label}</h2>
+      <input
+        style={{ ...style.base, ...errorStyle }}
+        random={false}
+        type="text"
+        value={value}
+        onChange={onChangeHandler}
+        onBlur={onBlurHandler}
+        disabled={notActive}
+      />
+      {error && (<p style={style.error}>{error}</p>)}
+    </div>
   );
 };
 
 TextField.propTypes = {
-  placeholder: PropTypes.string.isRequired,
-  labels: PropTypes.string.isRequired,
-  active: PropTypes.string.isRequired,
-  // error2: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  onBlurHandler: PropTypes.func.isRequired,
+  onChangeHandler: PropTypes.func.isRequired,
   error: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  notActive: PropTypes.bool.isRequired,
+
 };
 
 export default TextField;

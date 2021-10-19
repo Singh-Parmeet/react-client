@@ -1,12 +1,16 @@
 import React from 'react';
-import { TextFieldDemo } from './pages';
+import { ThemeProvider } from '@mui/material/styles';
+import { InputDemo, ChildrenDemo } from './pages';
+import { theme } from './theme';
 
 function App() {
   return (
-    <div>
-      <TextFieldDemo />
-    </div>
-
+    <>
+      <InputDemo />
+      <ThemeProvider theme={theme}>
+        <ChildrenDemo />
+      </ThemeProvider>
+    </>
   );
 }
 export default App;
