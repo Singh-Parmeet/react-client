@@ -10,7 +10,4 @@ export default {
   errorInput: {
     border: '1px solid red',
   },
-  errorInput1: {
-    border: '2px solid pink',
-  },
 };
