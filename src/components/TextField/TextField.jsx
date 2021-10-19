@@ -4,15 +4,14 @@ import style from './style';
 
 const TextField = (props) => {
   const {
-    value, onChangeHandler, label, notActive, error, error2, onBlurHandler,
+    value, onChangeHandler, label, notActive, error, onBlurHandler,
   } = props;
   const errorStyle = error ? style.errorInput : {};
-  const errorStyle2 = error2 ? style.errorInput1 : {};
   return (
     <div>
       <h2>{label}</h2>
       <input
-        style={{ ...style.base, ...errorStyle, ...errorStyle2 }}
+        style={{ ...style.base, ...errorStyle }}
         random={false}
         type="text"
         value={value}
@@ -32,7 +31,6 @@ TextField.propTypes = {
   error: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   notActive: PropTypes.bool.isRequired,
-  error2: PropTypes.string.isRequired,
 
 };
 
