@@ -4,29 +4,55 @@ import style from './style';
 
 const SelectField = (props) => {
   const {
-    error, selectedValue, onChangeHandlerForSelect, options, defaultText,
+    error, selectedValue, onChangeHandler, options, defaultText, onBlurHandler,
   } = props;
   return (
     <div>
       <h2>Select the game you play!</h2>
-      <select style={style.dropDownBox} value={selectedValue} onChange={onChangeHandlerForSelect}>
+      <select
+        style={style.dropDownBox}
+        value={selectedValue}
+        onChange={onChangeHandler}
+        onBlur={onBlurHandler}
+      >
         <option value="">{defaultText}</option>
-        <p style={{ display: 'none' }}>{error}</p>
         {options.map((item) => {
           const { label, value } = item;
-          return (<option style={style.options} key={value} value={value}>{label}</option>);
+          return (
+            <option
+              style={style.options}
+              key={value}
+              label={label}
+              value={value}
+            >
+              {label}
+            </option>
+          );
         })}
       </select>
+      {error && (<p style={style.error}>{error}</p>)}
     </div>
   );
 };
 
+SelectField.defaultProps = {
+  error: '',
+  options: [],
+  defaultText: 'select',
+};
+
 SelectField.propTypes = {
-  onChangeHandlerForSelect: PropTypes.func.isRequired,
-  error: PropTypes.string.isRequired,
+  onChangeHandler: PropTypes.func.isRequired,
+  onBlurHandler: PropTypes.func.isRequired,
+  error: PropTypes.string,
   selectedValue: PropTypes.string.isRequired,
-  defaultText: PropTypes.string.isRequired,
-  options: PropTypes.arrayOf(PropTypes.string).isRequired,
+  defaultText: PropTypes.string,
+  options: PropTypes.arrayOf(PropTypes.shape(
+    {
+      value: PropTypes.string,
+      label: PropTypes.string,
+    },
+  )),
 };
 
 export default SelectField;

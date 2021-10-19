@@ -11,4 +11,7 @@ export default {
   options: {
     padding: '20px',
   },
+  error: {
+    color: 'red',
+  },
 };

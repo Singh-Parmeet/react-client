@@ -1,2 +1,2 @@
 export { TextFieldDemo } from './TextFieldDemo';
-export { InputDemo } from './InputDemo/index';
+export { InputDemo } from './InputDemo';

@@ -6,7 +6,6 @@ function App() {
     <div>
       <InputDemo />
     </div>
-
   );
 }
 export default App;

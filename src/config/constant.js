@@ -1,20 +1,14 @@
-export const BANNER_DEFAULT = '/images/default.png';
+export const PUBLIC_IMAGE_FOLDER = '/images/';
+export const DEFAULT_BANNER_IMAGE = '/images/default.png';
 
-export const Banner = [{
-  imagPath: '/images/cloud.jpg',
-},
-{
-  imagPath: '/images/dns-server.png',
-},
-{
-  imagPath: '/images/full-stack-web-development.jpg',
-},
-{
-  imagPath: '/images/js.jpg',
-},
-{
-  imagPath: '/images/load-balancer.png',
-}];
+export const BANNERS = [
+  'cloud.jpg',
+  'dns-server.png',
+  'full-stack-web-development.jpg',
+  'js.jpg',
+  'load-balancer.png',
+];
+
 export const DROPDOWN_OPTIONS = [
   {
     label: 'FOOTBALL',
@@ -55,4 +49,16 @@ export const CRICKET_OPTIONS = [
     value: 'all rounder',
   },
 ];
-export default Banner;
+
+export const ERRORS = {
+  textField: {
+    error: 'Name is reqiured',
+    lengthError: 'Name must be atleast 3 characters long',
+  },
+  dropDown: {
+    error: 'Select atleast one sport',
+  },
+  radio: {
+    error: 'Select What you do?',
+  },
+};
