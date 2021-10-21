@@ -7,7 +7,6 @@ const TextField = (props) => {
     value, onChangeHandler, label, notActive, error, onBlurHandler,
   } = props;
   const errorStyle = error ? style.errorInput : {};
-  // const errorStyle2 = error2 ? style.errorInput1 : {};
   return (
     <div>
       <h2>{label}</h2>
