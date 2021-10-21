@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import TextField from '@mui/material/TextField';
@@ -19,7 +20,7 @@ const AddDialog = (props) => {
     open, onClose, onSubmit, onChangeHandler, onBlurHandler, handleClickOpen, allValues,
   } = props;
   return (
-    <div>
+    <Box m={2}>
       <Button variant="outlined" onClick={handleClickOpen}>
         Add Trainee
       </Button>
@@ -116,7 +117,7 @@ const AddDialog = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </Box>
   );
 };
 
