@@ -1,18 +1,10 @@
-export const BANNER_DEFAULT = '/images/default.png';
+export const PUBLIC_IMAGE_FOLDER = '/images/';
+export const DEFAULT_BANNER_IMAGE = '/images/default.png';
 
-export const Banner = [{
-  imagPath: '/images/cloud.jpg',
-},
-{
-  imagPath: '/images/dns-server.png',
-},
-{
-  imagPath: '/images/full-stack-web-development.jpg',
-},
-{
-  imagPath: '/images/js.jpg',
-},
-{
-  imagPath: '/images/load-balancer.png',
-}];
-export default Banner;
+export const BANNERS = [
+  'cloud.jpg',
+  'dns-server.png',
+  'full-stack-web-development.jpg',
+  'js.jpg',
+  'load-balancer.png',
+];
