@@ -17,25 +17,35 @@ const InputDemo = () => {
   const onChangeHandlerForSelect = (event) => {
     const { value } = event.target;
     setDropDown(value);
-    if (value !== undefined) { setShowRadio(true); } else { setShowRadio(false); }
+    if (value !== undefined) {
+      setShowRadio(true);
+    } else {
+      setShowRadio(false);
+    }
   };
 
   const onChangeHandlerForRadio = (event) => {
     const { value } = event.target;
-    if (dropDown === 'cricket') { setRadioValueForCricket(value); } else { setRadioValueForFootball(value); }
+    if (dropDown === 'cricket') {
+      setRadioValueForCricket(value);
+    } else {
+      setRadioValueForFootball(value);
+    }
   };
   console.log({
     'name ': name, 'sports ': dropDown, 'cricket ': radioValueForCricket, 'football ': radioValueForFootball,
   });
   return (
     <>
+      <h2>Name</h2>
       <TextField
         value={name}
         onChangeHandlerForInput={onChangeHandlerForInput}
         error=""
         notActive={false}
-        labels="Name"
       />
+
+      <h2>Select the game you play!</h2>
       <SelectField
         error=""
         selectedValue={dropDown}
@@ -45,12 +55,15 @@ const InputDemo = () => {
       />
       {showRadio
         && (
-          <RadioGroup
-            error=""
-            radioValue={dropDown === 'cricket' ? 'cricket' : 'football'}
-            onChangeHandlerForRadio={onChangeHandlerForRadio}
-            options={dropDown === 'cricket' ? CRICKET_OPTIONS : FOOTBALL_OPTIONS}
-          />
+          <>
+            <h2>What you do?</h2>
+            <RadioGroup
+              error=""
+              radioValue={dropDown === 'cricket' ? 'cricket' : 'football'}
+              onChangeHandlerForRadio={onChangeHandlerForRadio}
+              options={dropDown === 'cricket' ? CRICKET_OPTIONS : FOOTBALL_OPTIONS}
+            />
+          </>
         )}
     </>
   );
