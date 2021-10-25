@@ -8,14 +8,26 @@ const SelectField = (props) => {
   } = props;
   return (
     <>
-      <select style={style.dropDownBox} value={selectedValue} onChange={onChangeHandlerForSelect}>
+      <select
+        style={style.dropDownBox}
+        value={selectedValue}
+        onChange={onChangeHandlerForSelect}
+      >
         <option value="">{defaultText}</option>
         {options.map((item) => {
           const { label, value } = item;
-          return (<option style={style.options} key={value} value={value}>{label}</option>);
+          return (
+            <option
+              style={style.options}
+              key={value}
+              value={value}
+            >
+              {label}
+            </option>
+          );
         })}
       </select>
-      <p style={{ display: 'none' }}>{error}</p>
+      {error && (<p style={style.error}>{error}</p>)}
     </>
   );
 };
