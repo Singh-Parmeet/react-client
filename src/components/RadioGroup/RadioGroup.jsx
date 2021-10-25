@@ -7,8 +7,7 @@ const RadioGroup = (props) => {
     error, radioValue, onChangeHandler, options, name, onBlurHandler,
   } = props;
   return (
-    <div>
-      <h2>What you do?</h2>
+    <>
       <div onFocus={onBlurHandler}>
         {options.map((item) => {
           const { label, value } = item;
@@ -28,7 +27,7 @@ const RadioGroup = (props) => {
         })}
         { error && (<p style={style.error}>{error}</p>)}
       </div>
-    </div>
+    </>
   );
 };
 

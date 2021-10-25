@@ -10,7 +10,14 @@ const Button = (props) => {
     ? { ...customStyle.button, ...style, ...customStyle.primary }
     : { ...customStyle.button };
   return (
-    <button type="button" style={finalStyle} disabled={disabled} onClick={onClick}>{value}</button>
+    <button
+      type="button"
+      style={finalStyle}
+      disabled={disabled}
+      onClick={onClick}
+    >
+      {value}
+    </button>
   );
 };
 

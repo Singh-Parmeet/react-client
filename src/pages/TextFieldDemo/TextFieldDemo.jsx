@@ -3,12 +3,15 @@ import { TextField, Slider } from '../../components';
 import { DEFAULT_BANNER_IMAGE, BANNERS } from '../../config/constant';
 
 const TextFieldDemo = () => (
-  <div>
+  <>
     <Slider altText="image" banners={BANNERS} defaultBanner={DEFAULT_BANNER_IMAGE} />
-    <TextField placeHolder="Disabled Input" label="This is a Disabled Input" notActive />
-    <TextField placeHolder="Accessible" label="A Valid Input" error2 />
-    <TextField placeHolder="101" label="An Input With Errors" error="Could not be greater than" />
-  </div>
+    <h3>This is a disabled Input</h3>
+    <TextField placeholder="Disabled Input" active="true" />
+    <h2>A Valid Input</h2>
+    <TextField placeholder="Accessible" error2="qwerty" />
+    <h3>An Input with errors</h3>
+    <TextField placeholder="101" error="Could not be more than" />
+  </>
 );
 
 export default TextFieldDemo;
