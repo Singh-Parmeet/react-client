@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import style from './style';
 
 const RadioGroup = (props) => {
   const {
@@ -10,13 +11,19 @@ const RadioGroup = (props) => {
       {options.map((item) => {
         const { label, value } = item;
         return (
-          <>
-            <label htmlFor={value}>{label}</label>
-            <input type="radio" id={value} name={radioValue} value={value} onChange={onChangeHandlerForRadio} />
-          </>
+          <label htmlFor={value}>
+            <input
+              type="radio"
+              id={value}
+              name={radioValue}
+              value={value}
+              onChange={onChangeHandlerForRadio}
+            />
+            {label}
+          </label>
         );
       })}
-      <p style={{ display: 'none' }}>{error}</p>
+      { error && (<p style={style.error}>{error}</p>)}
     </>
   );
 };
