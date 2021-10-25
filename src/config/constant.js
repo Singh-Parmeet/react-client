@@ -8,3 +8,43 @@ export const BANNERS = [
   'js.jpg',
   'load-balancer.png',
 ];
+export const DROPDOWN_OPTIONS = [
+  {
+    label: 'FOOTBALL',
+    value: 'football',
+  },
+  {
+    label: 'CRICKET',
+    value: 'cricket',
+  },
+];
+
+export const FOOTBALL_OPTIONS = [
+  {
+    label: 'Defender',
+    value: 'defender',
+  },
+  {
+    label: 'Striker',
+    value: 'striker',
+  },
+];
+
+export const CRICKET_OPTIONS = [
+  {
+    label: 'Wicket Keeper',
+    value: 'wicket keeper',
+  },
+  {
+    label: 'Batsman',
+    value: 'batsman',
+  },
+  {
+    label: 'Bowler',
+    value: 'bowler',
+  },
+  {
+    label: 'All Rounder',
+    value: 'all rounder',
+  },
+];
