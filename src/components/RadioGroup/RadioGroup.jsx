@@ -4,39 +4,50 @@ import style from './style';
 
 const RadioGroup = (props) => {
   const {
-    error, radioValue, onChangeHandlerForRadio, options,
+    error, radioValue, onChangeHandler, options, name, onBlurHandler,
   } = props;
   return (
     <>
-      {options.map((item) => {
-        const { label, value } = item;
-        return (
-          <label htmlFor={value}>
-            <input
-              type="radio"
-              id={value}
-              name={radioValue}
-              value={value}
-              onChange={onChangeHandlerForRadio}
-            />
-            {label}
-          </label>
-        );
-      })}
-      { error && (<p style={style.error}>{error}</p>)}
+      <div onFocus={onBlurHandler}>
+        {options.map((item) => {
+          const { label, value } = item;
+          return (
+            <label htmlFor={value}>
+              <input
+                type="radio"
+                id={value}
+                name={name}
+                value={value}
+                onChange={onChangeHandler}
+                checked={radioValue === value}
+              />
+              {label}
+            </label>
+          );
+        })}
+        { error && (<p style={style.error}>{error}</p>)}
+      </div>
     </>
   );
 };
 
 RadioGroup.propTypes = {
-  onChangeHandlerForRadio: PropTypes.func.isRequired,
+  onChangeHandler: PropTypes.func.isRequired,
+  onBlurHandler: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
   error: PropTypes.string,
   radioValue: PropTypes.string.isRequired,
-  options: PropTypes.arrayOf(PropTypes.arrayOfString),
+  options: PropTypes.arrayOf(PropTypes.shape(
+    {
+      value: PropTypes.string,
+      label: PropTypes.string,
+    },
+  )),
 };
+
 RadioGroup.defaultProps = {
-  options: [],
   error: '',
+  options: [],
 };
 
 export default RadioGroup;

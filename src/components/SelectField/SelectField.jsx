@@ -4,14 +4,15 @@ import style from './style';
 
 const SelectField = (props) => {
   const {
-    error, selectedValue, onChangeHandlerForSelect, options, defaultText,
+    error, selectedValue, onChangeHandler, options, defaultText, onBlurHandler,
   } = props;
   return (
     <>
       <select
         style={style.dropDownBox}
         value={selectedValue}
-        onChange={onChangeHandlerForSelect}
+        onChange={onChangeHandler}
+        onBlur={onBlurHandler}
       >
         <option value="">{defaultText}</option>
         {options.map((item) => {
@@ -20,6 +21,7 @@ const SelectField = (props) => {
             <option
               style={style.options}
               key={value}
+              label={label}
               value={value}
             >
               {label}
@@ -32,16 +34,24 @@ const SelectField = (props) => {
   );
 };
 
+SelectField.defaultProps = {
+  error: '',
+  options: [],
+  defaultText: 'select',
+};
+
 SelectField.propTypes = {
-  onChangeHandlerForSelect: PropTypes.func.isRequired,
+  onChangeHandler: PropTypes.func.isRequired,
+  onBlurHandler: PropTypes.func.isRequired,
   error: PropTypes.string,
   selectedValue: PropTypes.string.isRequired,
-  defaultText: PropTypes.string.isRequired,
-  options: PropTypes.arrayOf(PropTypes.string),
-};
-SelectField.defaultProps = {
-  options: [],
-  error: '',
+  defaultText: PropTypes.string,
+  options: PropTypes.arrayOf(PropTypes.shape(
+    {
+      value: PropTypes.string,
+      label: PropTypes.string,
+    },
+  )),
 };
 
 export default SelectField;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { PUBLIC_IMAGE_FOLDER, DEFAULT_BANNER_IMAGE } from '../../config/constant';
-import { getRoundRobin, getRandomNumber } from '../../libs/utils/math';
+import { getRoundRobin, getRandomNumber } from '../../libs/utils/maths';
 import style from './style';
 
 const Slider = (props) => {

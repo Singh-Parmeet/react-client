@@ -48,3 +48,16 @@ export const CRICKET_OPTIONS = [
     value: 'all rounder',
   },
 ];
+
+export const ERRORS = {
+  textField: {
+    error: 'Name is reqiured',
+    lengthError: 'Name must be atleast 3 characters long',
+  },
+  dropDown: {
+    error: 'Select atleast one sport',
+  },
+  radio: {
+    error: 'Select What you do?',
+  },
+};

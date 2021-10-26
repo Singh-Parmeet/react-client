@@ -1,6 +1,6 @@
 import React from 'react';
 import { TextField, Slider } from '../../components';
-import { BANNERS, DEFAULT_BANNER_IMAGE } from '../../config/constant';
+import { DEFAULT_BANNER_IMAGE, BANNERS } from '../../config/constant';
 
 const TextFieldDemo = () => (
   <>
