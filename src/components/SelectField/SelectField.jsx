@@ -7,8 +7,7 @@ const SelectField = (props) => {
     error, selectedValue, onChangeHandler, options, defaultText, onBlurHandler,
   } = props;
   return (
-    <div>
-      <h2>Select the game you play!</h2>
+    <>
       <select
         style={style.dropDownBox}
         value={selectedValue}
@@ -31,7 +30,7 @@ const SelectField = (props) => {
         })}
       </select>
       {error && (<p style={style.error}>{error}</p>)}
-    </div>
+    </>
   );
 };
 

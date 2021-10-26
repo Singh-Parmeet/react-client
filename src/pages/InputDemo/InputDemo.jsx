@@ -42,10 +42,16 @@ const InputDemo = () => {
   });
   const handleErrors = (values) => {
     const {
-      name: newName, sport: newSport, cricket: newCricket, football: newFootball,
+      name: newName,
+      sport: newSport,
+      cricket: newCricket,
+      football: newFootball,
     } = values;
     validationSchema.validate({
-      name: newName, sport: newSport, football: newFootball, cricket: newCricket,
+      name: newName,
+      sport: newSport,
+      football: newFootball,
+      cricket: newCricket,
     }, { abortEarly: false })
       .then(() => {
         setFormValues({
@@ -111,14 +117,16 @@ const InputDemo = () => {
 
   return (
     <>
+      <h2>Name</h2>
       <TextField
         value={name}
         onBlurHandler={(event) => { onBlurHandler(event, 'name'); }}
         onChangeHandler={(event) => { onChangeHandler(event, 'name'); }}
         error={getError(formValues, 'name')}
         notActive={false}
-        label="Name"
       />
+
+      <h2>Select the game you play!</h2>
       <SelectField
         error={getError(formValues, 'sport')}
         selectedValue={sport}
@@ -131,24 +139,30 @@ const InputDemo = () => {
       {showRadio
         && (sport === 'cricket'
           ? (
-            <RadioGroup
-              error={getError(formValues, 'cricket')}
-              name={sport}
-              radioValue={cricket}
-              onBlurHandler={(event) => { onBlurHandler(event, 'cricket'); }}
-              options={CRICKET_OPTIONS}
-              onChangeHandler={(event) => { onChangeHandler(event, 'cricket'); }}
-            />
+            <>
+              <h2>What you do ?</h2>
+              <RadioGroup
+                error={getError(formValues, 'cricket')}
+                name={sport}
+                radioValue={cricket}
+                onBlurHandler={(event) => { onBlurHandler(event, 'cricket'); }}
+                options={CRICKET_OPTIONS}
+                onChangeHandler={(event) => { onChangeHandler(event, 'cricket'); }}
+              />
+            </>
           )
           : (
-            <RadioGroup
-              error={getError(formValues, 'football')}
-              name={sport}
-              radioValue={football}
-              onBlurHandler={(event) => { onBlurHandler(event, 'football'); }}
-              options={FOOTBALL_OPTIONS}
-              onChangeHandler={(event) => { onChangeHandler(event, 'football'); }}
-            />
+            <>
+              <h2>What you do?</h2>
+              <RadioGroup
+                error={getError(formValues, 'football')}
+                name={sport}
+                radioValue={football}
+                onBlurHandler={(event) => { onBlurHandler(event, 'football'); }}
+                options={FOOTBALL_OPTIONS}
+                onChangeHandler={(event) => { onChangeHandler(event, 'football'); }}
+              />
+            </>
           )
         )}
       <div style={style.contentRight}>
