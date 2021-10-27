@@ -8,7 +8,6 @@ export const BANNERS = [
   'js.jpg',
   'load-balancer.png',
 ];
-
 export const DROPDOWN_OPTIONS = [
   {
     label: 'FOOTBALL',

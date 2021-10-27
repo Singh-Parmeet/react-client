@@ -3,7 +3,7 @@ import { Typography } from '@material-ui/core';
 import { Math } from '../../components';
 
 const ChildrenDemo = () => (
-  <div>
+  <>
     <p>
       <Math first={7} second={4} operator="+" />
     </p>
@@ -31,7 +31,7 @@ const ChildrenDemo = () => (
         )
       }
     </Math>
-  </div>
+  </>
 );
 
 export default ChildrenDemo;

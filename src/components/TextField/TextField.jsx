@@ -4,12 +4,11 @@ import style from './style';
 
 const TextField = (props) => {
   const {
-    value, onChangeHandler, label, notActive, error, onBlurHandler,
+    value, onChangeHandler, notActive, error, onBlurHandler,
   } = props;
   const errorStyle = error ? style.errorInput : {};
   return (
-    <div>
-      <h2>{label}</h2>
+    <>
       <input
         style={{ ...style.base, ...errorStyle }}
         random={false}
@@ -20,7 +19,7 @@ const TextField = (props) => {
         disabled={notActive}
       />
       {error && (<p style={style.error}>{error}</p>)}
-    </div>
+    </>
   );
 };
 
@@ -29,7 +28,6 @@ TextField.propTypes = {
   onBlurHandler: PropTypes.func.isRequired,
   onChangeHandler: PropTypes.func.isRequired,
   error: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
   notActive: PropTypes.bool.isRequired,
 
 };
