@@ -3,11 +3,12 @@ export const DEFAULT_BANNER_IMAGE = '/images/default.png';
 
 export const BANNERS = [
   'cloud.jpg',
-  'dns-server.png',
-  'full-stack-web-development.jpg',
   'js.jpg',
   'load-balancer.png',
+  'full-stack-web-development.jpg',
+  'dns-server.png',
 ];
+
 export const DROPDOWN_OPTIONS = [
   {
     label: 'FOOTBALL',
@@ -61,3 +62,14 @@ export const ERRORS = {
     error: 'Select What you do?',
   },
 };
+
+export const Columns = [{
+  field: 'name',
+  label: 'Name',
+  align: 'center',
+},
+{
+  field: 'email',
+  label: 'Email Address',
+},
+];

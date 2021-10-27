@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import TextField from '@mui/material/TextField';
@@ -19,7 +20,7 @@ const AddDialog = (props) => {
     open, onClose, onSubmit, onChangeHandler, onBlurHandler, allValues,
   } = props;
   return (
-    <>
+    <Box m={2}>
       <Dialog open={open}>
         <DialogTitle>Add Trainee</DialogTitle>
         <DialogContent>
@@ -113,7 +114,7 @@ const AddDialog = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </>
+    </Box>
   );
 };
 
