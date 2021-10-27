@@ -86,7 +86,7 @@ const Trainee = () => {
   };
 
   return (
-    <div>
+    <>
       <AddDialog
         open={open}
         handleClickOpen={handleClickOpen}
@@ -96,7 +96,7 @@ const Trainee = () => {
         allValues={formValues}
         onSubmit={onSubmit}
       />
-    </div>
+    </>
   );
 };
 
