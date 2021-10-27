@@ -19,7 +19,7 @@ const AddDialog = (props) => {
     open, onClose, onSubmit, onChangeHandler, onBlurHandler, handleClickOpen, allValues,
   } = props;
   return (
-    <div>
+    <>
       <Button variant="outlined" onClick={handleClickOpen}>
         Add Trainee
       </Button>
@@ -116,7 +116,7 @@ const AddDialog = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 };
 
