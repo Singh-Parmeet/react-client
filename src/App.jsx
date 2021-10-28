@@ -1,15 +1,10 @@
 import React from 'react';
-import { ThemeProvider } from '@mui/material/styles';
-import { InputDemo, ChildrenDemo } from './pages';
-import { theme } from './theme';
+import { Trainee } from './pages';
 
 function App() {
   return (
     <>
-      <InputDemo />
-      <ThemeProvider theme={theme}>
-        <ChildrenDemo />
-      </ThemeProvider>
+      <Trainee />
     </>
   );
 }
