@@ -4,6 +4,7 @@ import {
   Link,
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Button from '@mui/material/Button';
 import { AddDialog } from './components';
 import trainees from './data/trainee';
 
@@ -91,6 +92,9 @@ const TraineeList = ({ match: { path } }) => {
 
   return (
     <>
+      <Button variant="outlined" onClick={handleClickOpen}>
+        Add Trainee
+      </Button>
       <AddDialog
         open={open}
         handleClickOpen={handleClickOpen}

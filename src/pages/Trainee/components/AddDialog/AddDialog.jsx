@@ -17,13 +17,10 @@ import { getError, hasErrors, isTouched } from '../../../../helpers/helpers';
 
 const AddDialog = (props) => {
   const {
-    open, onClose, onSubmit, onChangeHandler, onBlurHandler, handleClickOpen, allValues,
+    open, onClose, onSubmit, onChangeHandler, onBlurHandler, allValues,
   } = props;
   return (
     <Box m={2}>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Add Trainee
-      </Button>
       <Dialog open={open}>
         <DialogTitle>Add Trainee</DialogTitle>
         <DialogContent>
@@ -124,7 +121,6 @@ const AddDialog = (props) => {
 AddDialog.propTypes = {
   onChangeHandler: PropTypes.func.isRequired,
   onBlurHandler: PropTypes.func.isRequired,
-  handleClickOpen: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onClose: PropTypes.string.isRequired,
   open: PropTypes.bool.isRequired,
