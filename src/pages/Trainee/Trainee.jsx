@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import * as Yup from 'yup';
+import Button from '@mui/material/Button';
 import { AddDialog } from './components';
 
 const Trainee = () => {
@@ -86,7 +87,10 @@ const Trainee = () => {
   };
 
   return (
-    <div>
+    <>
+      <Button variant="outlined" onClick={handleClickOpen}>
+        Add Trainee
+      </Button>
       <AddDialog
         open={open}
         handleClickOpen={handleClickOpen}
@@ -96,7 +100,7 @@ const Trainee = () => {
         allValues={formValues}
         onSubmit={onSubmit}
       />
-    </div>
+    </>
   );
 };
 
