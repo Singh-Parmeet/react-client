@@ -140,7 +140,7 @@ const Login = () => {
             sx={{ my: 2 }}
             disabled={hasErrors(loginValues?.errors) || !isTouched(loginValues?.touched)}
           >
-            Contained
+            Sign in
           </Button>
         </CardContent>
       </Card>
