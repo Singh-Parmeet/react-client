@@ -6,11 +6,13 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import TableSortLabel from '@mui/material/TableSortLabel';
 import Paper from '@mui/material/Paper';
+import { StyledTableRow } from './style';
 
 const GenericTable = (props) => {
   const {
-    id, columns, data, columnHeadingColor,
+    id, columns, data, columnHeadingColor, orderBy, sort, order, select,
   } = props;
   return (
     <TableContainer component={Paper} margin={5}>
@@ -23,23 +25,29 @@ const GenericTable = (props) => {
                 key={column.field}
                 align={column.align}
               >
-                {column.label ? column.label : column.field}
+                <TableSortLabel
+                  active={orderBy === column.field}
+                  direction={order}
+                  onClick={() => sort(column.field)}
+                >
+                  {column.label ? column.label : column.field}
+                </TableSortLabel>
               </TableCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
           {data.map((row) => (
-            <TableRow key={row.id}>
+            <StyledTableRow key={row.id}>
               {columns.map((column) => {
                 const value = row[column.field];
                 return (
-                  <TableCell key={row.id} align={column.align}>
-                    {value}
+                  <TableCell key={`${row.id}${column.field}`} onClick={() => select(row.id)} align={column.align}>
+                    {column.format ? column.format(value) : value}
                   </TableCell>
                 );
               })}
-            </TableRow>
+            </StyledTableRow>
           ))}
         </TableBody>
       </Table>
@@ -49,6 +57,8 @@ const GenericTable = (props) => {
 
 GenericTable.defaultProps = {
   columnHeadingColor: '#000',
+  orderBy: '',
+  order: 'asc',
 };
 
 GenericTable.propTypes = {
@@ -56,6 +66,10 @@ GenericTable.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   columnHeadingColor: PropTypes.string,
+  orderBy: PropTypes.string,
+  sort: PropTypes.func.isRequired,
+  order: PropTypes.string,
+  select: PropTypes.func.isRequired,
 };
 
 export default GenericTable;

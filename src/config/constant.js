@@ -1,3 +1,5 @@
+import { getFormattedDate } from '../helpers/helpers';
+
 export const PUBLIC_IMAGE_FOLDER = '/images/';
 export const DEFAULT_BANNER_IMAGE = '/images/default.png';
 
@@ -63,13 +65,23 @@ export const ERRORS = {
   },
 };
 
+export const MathResult = ({
+  first, second, result,
+}) => (`Sum of ${first} and ${second} is ${result}`);
+
 export const Columns = [{
   field: 'name',
   label: 'Name',
-  align: 'center',
 },
 {
   field: 'email',
   label: 'Email Address',
+  format: (value) => value && value.toUpperCase(),
+},
+{
+  field: 'createdAt',
+  label: 'Date',
+  align: 'right',
+  format: getFormattedDate,
 },
 ];
