@@ -3,7 +3,9 @@ import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { AddDialog } from './components';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { AddDialog, EditDialog, RemoveDialog } from './components';
 import trainees from './data/trainee';
 import { GenericTable } from '../../components';
 import { Columns } from '../../config/constant';
@@ -11,9 +13,21 @@ import { Columns } from '../../config/constant';
 const TraineeList = ({ match, history }) => {
   const schemaErrors = {};
   let validationResult = {};
-  const [open, setOpen] = useState(false);
+  const [dialog, setDialog] = useState({
+    addDialog: false,
+    editDialog: false,
+    removeDialog: false,
+  });
+  const [userData, setUserData] = useState({});
+  const [editFormValues, setEditFormValues] = useState({
+    name: '',
+    email: '',
+    touched: {},
+  });
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('');
+  const [page, setPage] = useState(0);
+  const [rowsPerPage] = useState(10);
   const [formValues, setFormValues] = useState({
     name: '',
     email: '',
@@ -40,6 +54,8 @@ const TraineeList = ({ match, history }) => {
       }),
   });
 
+  /**    Form Validation  */
+
   const handleErrors = (values) => {
     const {
       name: newName, email: newEmail, password: newPassword, confirmPassword: newConfirmPassword,
@@ -56,19 +72,12 @@ const TraineeList = ({ match, history }) => {
       });
   };
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const onSubmit = () => {
-    setOpen(false);
+  const handleAddDialogOpen = () => {
+    setDialog({ ...dialog, addDialog: true });
   };
 
   const onChangeHandler = async (event, type) => {
-    const { value } = event.target;
+    const { value = '' } = event.target;
     touched[type] = true;
     const newValue = {
       ...formValues,
@@ -80,7 +89,7 @@ const TraineeList = ({ match, history }) => {
   };
 
   const onBlurHandler = async (event, type) => {
-    const { value } = event.target;
+    const { value = '' } = event.target;
     if (value === '') {
       touched[type] = true;
       const newValue = {
@@ -92,40 +101,124 @@ const TraineeList = ({ match, history }) => {
     }
   };
 
+  /**   Dialogbox Handlers    */
+
+  const handleAddDialogClose = () => {
+    setDialog({ ...dialog, addDialog: false });
+  };
+
+  const handleEditDialogOpen = ({ name, email }) => {
+    setEditFormValues({ ...editFormValues, name, email });
+    setDialog({ ...dialog, editDialog: true });
+  };
+
+  const handleEditDialogClose = () => {
+    setDialog({ ...dialog, editDialog: false });
+  };
+
+  const handleRemoveDialogOpen = (data) => {
+    setUserData(data);
+    setDialog({ ...dialog, removeDialog: true });
+  };
+
+  const handleRemoveDialogClose = () => {
+    setDialog({ ...dialog, removeDialog: false });
+  };
+
+  const onSubmit = () => {
+    setDialog({ ...dialog, addDialog: false });
+  };
+
+  /** Pagination Handler */
+
   const handleSort = (field) => {
     setOrder(order === 'asc' && orderBy === field ? 'desc' : 'asc');
     setOrderBy(field);
   };
 
+  const handleChangePage = (event, newValue) => {
+    setPage(newValue);
+  };
+
+  /** link handlers */
+
   const handleSelect = (field) => {
     history.push(`${match.path}/${field}`);
   };
 
-  console.log('TraineeList history', history);
+  /** User Handlers */
+
+  const handleDeleteUser = () => {
+    console.log('Deleted user', userData);
+    setDialog({ ...dialog, removeDialog: false });
+  };
+
+  const handleChangeData = (event, type) => {
+    const { value = '' } = event.target;
+    touched[type] = true;
+    const newValue = {
+      ...editFormValues,
+      touched,
+      [type]: value,
+    };
+    setEditFormValues(newValue);
+  };
+
+  const onEditSubmit = () => {
+    console.log(editFormValues);
+    setDialog({ ...dialog, editDialog: false });
+  };
+
   return (
     <>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button variant="outlined" onClick={handleAddDialogOpen}>
         Add Trainee
       </Button>
       <AddDialog
-        open={open}
-        handleClickOpen={handleClickOpen}
-        onClose={handleClose}
+        open={dialog?.addDialog}
+        onClose={handleAddDialogClose}
         onBlurHandler={onBlurHandler}
         onChangeHandler={onChangeHandler}
         allValues={formValues}
         onSubmit={onSubmit}
+      />
+      <EditDialog
+        open={dialog?.editDialog}
+        editData={editFormValues}
+        onClose={handleEditDialogClose}
+        onHandleChangeData={handleChangeData}
+        onSubmit={onEditSubmit}
+      />
+      <RemoveDialog
+        open={dialog?.removeDialog}
+        onClose={handleRemoveDialogClose}
+        onDelete={handleDeleteUser}
       />
       <Box sx={{ margin: '20px' }}>
         <GenericTable
           id="id"
           data={trainees}
           columns={Columns}
-          columnHeadingColor="#928d8d"
           orderBy={orderBy}
           order={order}
           sort={handleSort}
           select={handleSelect}
+          count={100}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          onChangePage={handleChangePage}
+          actions={
+            [
+              {
+                icon: <EditIcon />,
+                handler: handleEditDialogOpen,
+              },
+              {
+                icon: <DeleteIcon />,
+                handler: handleRemoveDialogOpen,
+              },
+            ]
+          }
         />
       </Box>
     </>
