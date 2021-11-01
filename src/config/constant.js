@@ -1,13 +1,16 @@
+import { getFormattedDate } from '../helpers/helpers';
+
 export const PUBLIC_IMAGE_FOLDER = '/images/';
 export const DEFAULT_BANNER_IMAGE = '/images/default.png';
 
 export const BANNERS = [
   'cloud.jpg',
-  'dns-server.png',
-  'full-stack-web-development.jpg',
   'js.jpg',
   'load-balancer.png',
+  'full-stack-web-development.jpg',
+  'dns-server.png',
 ];
+
 export const DROPDOWN_OPTIONS = [
   {
     label: 'FOOTBALL',
@@ -61,3 +64,24 @@ export const ERRORS = {
     error: 'Select What you do?',
   },
 };
+
+export const MathResult = ({
+  first, second, result,
+}) => (`Sum of ${first} and ${second} is ${result}`);
+
+export const Columns = [{
+  field: 'name',
+  label: 'Name',
+},
+{
+  field: 'email',
+  label: 'Email Address',
+  format: (value) => value && value.toUpperCase(),
+},
+{
+  field: 'createdAt',
+  label: 'Date',
+  align: 'right',
+  format: getFormattedDate,
+},
+];

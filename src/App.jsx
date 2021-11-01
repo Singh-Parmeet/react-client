@@ -21,6 +21,7 @@ const App = () => (
         <PrivateRoute exact path="/children-demo" component={ChildrenDemo} />
         <AuthRoute exact path="/login" component={Login} />
         <PrivateRoute exact path="/" component={Trainee} />
+        <PrivateRoute path="/trainee" component={Trainee} />
         <PrivateRoute component={NoMatch} />
       </Switch>
     </ThemeProvider>
