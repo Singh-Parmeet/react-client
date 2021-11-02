@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit';
@@ -9,10 +10,12 @@ import { AddDialog, EditDialog, RemoveDialog } from './components';
 import trainees from './data/trainee';
 import { GenericTable } from '../../components';
 import { Columns } from '../../config/constant';
+import { SnackBarContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
 
 const TraineeList = ({ match, history }) => {
   const schemaErrors = {};
   let validationResult = {};
+  const openSnackBar = useContext(SnackBarContext);
   const [dialog, setDialog] = useState({
     addDialog: false,
     editDialog: false,
@@ -127,6 +130,7 @@ const TraineeList = ({ match, history }) => {
 
   const onSubmit = () => {
     setDialog({ ...dialog, addDialog: false });
+    openSnackBar('Trainee Added Successfully', 'success');
   };
 
   /** Pagination Handler */
@@ -151,6 +155,10 @@ const TraineeList = ({ match, history }) => {
   const handleDeleteUser = () => {
     console.log('Deleted user', userData);
     setDialog({ ...dialog, removeDialog: false });
+    const date = userData?.createdAt.split('T')[0];
+    const severity = moment(date).isBefore('2019-02-14') ? 'error' : 'success';
+    const msg = severity === 'error' ? 'Error: Cannnot delete Trainee' : 'Trainee Deleted Successfully';
+    openSnackBar(msg, severity);
   };
 
   const handleChangeData = (event, type) => {
@@ -167,6 +175,7 @@ const TraineeList = ({ match, history }) => {
   const onEditSubmit = () => {
     console.log(editFormValues);
     setDialog({ ...dialog, editDialog: false });
+    openSnackBar('Trainee Updated Successfully', 'success');
   };
 
   return (
