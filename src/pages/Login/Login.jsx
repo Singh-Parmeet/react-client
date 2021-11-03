@@ -1,20 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Box from '@mui/material/Box';
+import PropTypes from 'prop-types';
 import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import InputAdornment from '@mui/material/InputAdornment';
 import EmailIcon from '@mui/icons-material/Email';
 import Visibility from '@mui/icons-material/Visibility';
-import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import LockRoundedIcon from '@mui/icons-material/LockRounded';
 import * as Yup from 'yup';
 import { getError, hasErrors, isTouched } from '../../helpers/helpers';
+import { callApi } from '../../libs/utils/api';
+import { SnackBarContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
 
-const Login = () => {
+const Login = ({ history }) => {
   const schemaErrors = {};
   let validationResult = {};
   const [loginValues, setLoginValues] = useState({
@@ -23,7 +26,9 @@ const Login = () => {
     touched: {},
     errors: {},
   });
-  const { touched } = loginValues;
+  const [loading, setLoading] = useState(false);
+  const openSnackBar = useContext(SnackBarContext);
+  const { email, password, touched } = loginValues;
 
   const traineeSchema = Yup.object({
     email: Yup.string().email('Email Address must be a valid email').label('Email').required(),
@@ -71,13 +76,27 @@ const Login = () => {
     }
   };
 
+  const handleLogin = async () => {
+    setLoading(true);
+    const { data } = await callApi('http://localhost:9000/api/user/createToken', email, password);
+    setTimeout(() => {
+      if (data) {
+        localStorage.setItem('token', data.token);
+        setLoading(false);
+        openSnackBar('Successfully Logged In', 'success');
+        history.push('/trainee');
+      } else {
+        setLoading(false);
+        openSnackBar('Invalid Login Credential', 'error');
+      }
+    }, [2000]);
+  };
+
   return (
     <Box
       sx={{
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center',
-        height: '75vh',
       }}
     >
       <Card sx={{ maxWidth: 500 }}>
@@ -101,10 +120,10 @@ const Login = () => {
             </Typography>
           </Box>
           <TextField
-            error={getError(loginValues, 'email') || false}
+            error={getError(loginValues, 'email')}
             label="Email"
             sx={{ my: 2 }}
-            value={loginValues?.email}
+            value={email}
             helperText={getError(loginValues, 'email')}
             fullWidth
             onChange={(event) => { onChangeHandler(event, 'email'); }}
@@ -118,12 +137,12 @@ const Login = () => {
             }}
           />
           <TextField
-            error={getError(loginValues, 'password') || false}
+            error={getError(loginValues, 'password')}
             label="Password"
             type="password"
             sx={{ my: 2 }}
             helperText={getError(loginValues, 'password')}
-            value={loginValues?.password}
+            value={password}
             fullWidth
             onChange={(event) => { onChangeHandler(event, 'password'); }}
             onBlur={(event) => { onBlurHandler(event, 'password'); }}
@@ -135,18 +154,24 @@ const Login = () => {
               ),
             }}
           />
-          <Button
+          <LoadingButton
             variant="contained"
             fullWidth
             sx={{ my: 2 }}
+            loading={loading}
             disabled={hasErrors(loginValues?.errors) || !isTouched(loginValues?.touched)}
+            onClick={() => (handleLogin())}
           >
             SIGN IN
-          </Button>
+          </LoadingButton>
         </CardContent>
       </Card>
     </Box>
   );
+};
+
+Login.propTypes = {
+  history: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export default Login;
