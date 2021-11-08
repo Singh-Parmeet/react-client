@@ -16,9 +16,9 @@ const App = () => (
     <ThemeProvider theme={customTheme}>
       <CssBaseline />
       <Switch>
-        <PrivateRoute path="/text-field-demo" component={TextFieldDemo} />
-        <PrivateRoute path="/input-demo" component={InputDemo} />
-        <PrivateRoute path="/children-demo" component={ChildrenDemo} />
+        <PrivateRoute exact path="/text-field-demo" component={TextFieldDemo} />
+        <PrivateRoute exact path="/input-demo" component={InputDemo} />
+        <PrivateRoute exact path="/children-demo" component={ChildrenDemo} />
         <AuthRoute exact path="/login" component={Login} />
         <PrivateRoute exact path="/" component={Trainee} />
         <PrivateRoute path="/trainee" component={Trainee} />
