@@ -77,6 +77,7 @@ const Login = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        height: '75vh',
       }}
     >
       <Card sx={{ maxWidth: 500 }}>
@@ -140,7 +141,7 @@ const Login = () => {
             sx={{ my: 2 }}
             disabled={hasErrors(loginValues?.errors) || !isTouched(loginValues?.touched)}
           >
-            Sign in
+            SIGN IN
           </Button>
         </CardContent>
       </Card>
