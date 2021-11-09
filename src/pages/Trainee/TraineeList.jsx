@@ -221,7 +221,7 @@ const TraineeList = (props) => {
   useEffect(() => {
     traineesListHandler();
     // return () => { console.log('clean up'); };
-  }, [page]);
+  }, [page, count]);
   return (
     <>
       <Button variant="outlined" onClick={handleAddDialogOpen}>
