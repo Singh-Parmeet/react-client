@@ -14,7 +14,7 @@ const Navbar = () => (
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           Trainee Portal
         </Typography>
-        <Link to="/" style={style.linkUnderline}>
+        <Link to="/trainee" style={style.linkUnderline}>
           <Button style={style.textColor} color="inherit">Trainee</Button>
         </Link>
         <Link to="/text-field-demo" style={style.linkUnderline}>
