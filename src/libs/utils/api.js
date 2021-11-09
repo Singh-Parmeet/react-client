@@ -1,16 +1,21 @@
 import axios from 'axios';
 
-export const callApi = async (api, email, password) => {
+const url = 'http://127.0.0.1:9000/api/';
+export const callApi = async (api, route, formData = {}, params = {}) => {
   let response;
-  const data = {
-    email,
-    password,
-  };
   try {
-    const res = await axios.post(api, data);
-    response = res.data;
+    const options = {
+      url: `${url}${api}`,
+      method: route,
+      headers: {
+        Authorization: localStorage.getItem('token'),
+      },
+      params,
+      data: formData,
+    };
+    const { data } = await axios(options);
+    response = data;
   } catch (error) {
-    console.log(error.response);
     response = error.response.data;
   }
   return response;

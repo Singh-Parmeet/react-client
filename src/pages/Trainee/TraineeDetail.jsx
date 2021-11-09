@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
@@ -8,12 +7,12 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
-import trainees from './data/trainee';
+import { getFormattedDate } from '../../helpers/helpers';
 
-const TraineeDetail = ({ match }) => {
-  const { id } = match.params;
-  console.log(id);
-  const { name, email, createdAt } = trainees.find((item) => (item.id === id));
+const TraineeDetail = ({ location }) => {
+  console.log(location);
+  const { response } = location.state;
+  const { name, email, createdAt } = response;
 
   return (
     <>
@@ -28,7 +27,7 @@ const TraineeDetail = ({ match }) => {
           />
           <CardContent sx={{ flex: '1 0 auto' }}>
             <Typography component="h4" variant="h4">{name}</Typography>
-            <Typography variant="p" component="p">{moment(createdAt).format('dddd, MMMM Do YYYY, h:mm:ss a')}</Typography>
+            <Typography variant="p" component="p">{getFormattedDate(createdAt)}</Typography>
             <Typography component="h6" variant="h6">{email}</Typography>
           </CardContent>
         </Box>
@@ -41,6 +40,6 @@ const TraineeDetail = ({ match }) => {
 };
 
 TraineeDetail.propTypes = {
-  match: PropTypes.objectOf(PropTypes.string).isRequired,
+  location: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 export default TraineeDetail;

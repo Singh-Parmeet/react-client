@@ -78,7 +78,11 @@ const Login = ({ history }) => {
 
   const handleLogin = async () => {
     setLoading(true);
-    const { data } = await callApi('http://localhost:9000/api/user/createToken', email, password);
+    const loginCredential = {
+      email,
+      password,
+    };
+    const { data } = await callApi('user/createToken', 'post', loginCredential);
     setTimeout(() => {
       if (data) {
         localStorage.setItem('token', data.token);
