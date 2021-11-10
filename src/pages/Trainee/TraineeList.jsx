@@ -119,8 +119,10 @@ const TraineeList = (props) => {
   };
 
   const handleEditDialogOpen = (editData) => {
-    const { name: editedName, email: editedEmail } = editData;
-    setEditFormValues({ ...editFormValues, editedName, editedEmail });
+    const { originalId, name: editedName, email: editedEmail } = editData;
+    setEditFormValues({
+      ...editFormValues, editedName, editedEmail, originalId,
+    });
     setDialog({ ...dialog, editDialog: true });
   };
 
@@ -179,7 +181,7 @@ const TraineeList = (props) => {
   };
 
   /** User Handlers */
-  const handleDeleteUser = () => {
+  const handleDeleteUser = async () => {
     console.log('Deleted user', userData);
     setDialog({ ...dialog, removeDialog: false });
     const date = userData?.createdAt.split('T')[0];

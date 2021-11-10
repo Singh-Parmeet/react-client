@@ -22,7 +22,7 @@ const EditDialog = ({
   return (
     <Box>
       <Dialog open={open}>
-        <DialogTitle>Add Trainee</DialogTitle>
+        <DialogTitle>Edit Trainee</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Enter Your Trainee Details
