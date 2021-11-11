@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { AddDialog } from './components';
 import trainees from './data/trainee';
-import { GenericTable } from '../../components';
+import { Table } from '../../components';
 import { Columns } from '../../config/constant';
 
 const TraineeList = ({ match, history }) => {
@@ -117,7 +117,7 @@ const TraineeList = ({ match, history }) => {
         onSubmit={onSubmit}
       />
       <Box sx={{ margin: '20px' }}>
-        <GenericTable
+        <Table
           id="id"
           data={trainees}
           columns={Columns}
