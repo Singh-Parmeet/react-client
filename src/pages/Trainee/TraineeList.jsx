@@ -118,10 +118,10 @@ const TraineeList = (props) => {
     setDialog({ ...dialog, addDialog: false });
   };
 
-  const handleEditDialogOpen = (editData) => {
+  const handleEditDialogOpen = async (editData) => {
     const { originalId, name: editedName, email: editedEmail } = editData;
     setEditFormValues({
-      ...editFormValues, editedName, editedEmail, originalId,
+      ...editFormValues, originalId, editedName, editedEmail,
     });
     setDialog({ ...dialog, editDialog: true });
   };
@@ -182,7 +182,9 @@ const TraineeList = (props) => {
 
   /** User Handlers */
   const handleDeleteUser = async () => {
-    console.log('Deleted user', userData);
+    const { originalId } = userData;
+    const data = await callApi('user/', 'delete', { originalId }, {});
+    console.log(data);
     setDialog({ ...dialog, removeDialog: false });
     const date = userData?.createdAt.split('T')[0];
     const severity = moment(date).isBefore('2019-02-14') ? 'error' : 'success';
@@ -201,9 +203,14 @@ const TraineeList = (props) => {
     setEditFormValues(newValue);
   };
 
-  const onEditSubmit = () => {
-    console.log(editFormValues);
+  const onEditSubmit = async () => {
+    const { originalId, editedName, editedEmail } = editFormValues;
+
     setDialog({ ...dialog, editDialog: false });
+    const data = await callApi('user/', 'put', {
+      originalId, name: editedName, role: 'trainee', email: editedEmail,
+    }, {});
+    console.log(data);
     openSnackBar('Trainee Updated Successfully', 'success');
   };
 
@@ -222,8 +229,7 @@ const TraineeList = (props) => {
 
   useEffect(() => {
     traineesListHandler();
-    // return () => { console.log('clean up'); };
-  }, [page, count]);
+  }, [page, dialog.addDialog, dialog.removeDialog, dialog.editDialog]);
   return (
     <>
       <Button variant="outlined" onClick={handleAddDialogOpen}>
