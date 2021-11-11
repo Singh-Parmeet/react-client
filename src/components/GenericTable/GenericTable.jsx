@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Table from '@mui/material/Table';
+import MuiTable from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
@@ -8,13 +8,13 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-const GenericTable = (props) => {
+const Table = (props) => {
   const {
     id, columns, data, columnHeadingColor,
   } = props;
   return (
     <TableContainer component={Paper} margin={5}>
-      <Table>
+      <MuiTable>
         <TableHead>
           <TableRow key={id}>
             {columns.map((column) => (
@@ -42,20 +42,20 @@ const GenericTable = (props) => {
             </TableRow>
           ))}
         </TableBody>
-      </Table>
+      </MuiTable>
     </TableContainer>
   );
 };
 
-GenericTable.defaultProps = {
+Table.defaultProps = {
   columnHeadingColor: '#000',
 };
 
-GenericTable.propTypes = {
+Table.propTypes = {
   id: PropTypes.string.isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   columnHeadingColor: PropTypes.string,
 };
 
-export default GenericTable;
+export default Table;
