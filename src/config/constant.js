@@ -62,3 +62,14 @@ export const ERRORS = {
     error: 'Select What you do?',
   },
 };
+
+export const Columns = [{
+  field: 'name',
+  label: 'Name',
+  align: 'center',
+},
+{
+  field: 'email',
+  label: 'Email Address',
+},
+];

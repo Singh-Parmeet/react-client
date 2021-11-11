@@ -4,9 +4,12 @@ import {
   Link,
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { AddDialog } from './components';
 import trainees from './data/trainee';
+import { Table } from '../../components';
+import { Columns } from '../../config/constant';
 
 const TraineeList = ({ match: { path } }) => {
   const schemaErrors = {};
@@ -104,6 +107,9 @@ const TraineeList = ({ match: { path } }) => {
         allValues={formValues}
         onSubmit={onSubmit}
       />
+      <Box sx={{ margin: '20px' }}>
+        <Table id="id" data={trainees} columns={Columns} columnHeadingColor="#928d8d" />
+      </Box>
       <ul>
         {trainees.map((person) => (
           <Link to={`${path}/${person.id}`}>
