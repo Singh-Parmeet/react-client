@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import * as Yup from 'yup';
-import {
-  Link,
-} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -11,10 +8,12 @@ import trainees from './data/trainee';
 import { Table } from '../../components';
 import { Columns } from '../../config/constant';
 
-const TraineeList = ({ match: { path } }) => {
+const TraineeList = ({ match, history }) => {
   const schemaErrors = {};
   let validationResult = {};
   const [open, setOpen] = useState(false);
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('');
   const [formValues, setFormValues] = useState({
     name: '',
     email: '',
@@ -93,6 +92,16 @@ const TraineeList = ({ match: { path } }) => {
     }
   };
 
+  const handleSort = (field) => {
+    setOrder(order === 'asc' && orderBy === field ? 'desc' : 'asc');
+    setOrderBy(field);
+  };
+
+  const handleSelect = (field) => {
+    history.push(`${match.path}/${field}`);
+  };
+
+  console.log('TraineeList history', history);
   return (
     <>
       <Button variant="outlined" onClick={handleClickOpen}>
@@ -108,24 +117,24 @@ const TraineeList = ({ match: { path } }) => {
         onSubmit={onSubmit}
       />
       <Box sx={{ margin: '20px' }}>
-        <Table id="id" data={trainees} columns={Columns} columnHeadingColor="#928d8d" />
+        <Table
+          id="id"
+          data={trainees}
+          columns={Columns}
+          columnHeadingColor="#928d8d"
+          orderBy={orderBy}
+          order={order}
+          sort={handleSort}
+          select={handleSelect}
+        />
       </Box>
-      <ul>
-        {trainees.map((person) => (
-          <Link to={`${path}/${person.id}`}>
-            <li color="inherit">
-              {person.name}
-            </li>
-
-          </Link>
-        ))}
-      </ul>
     </>
   );
 };
 
 TraineeList.propTypes = {
   match: PropTypes.objectOf(PropTypes.string).isRequired,
+  history: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export default TraineeList;
