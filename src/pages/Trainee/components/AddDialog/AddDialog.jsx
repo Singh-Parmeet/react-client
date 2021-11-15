@@ -105,7 +105,7 @@ const AddDialog = (props) => {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose}>Cancel</Button>
+          <Button onClick={() => { onClose('addDialog'); }}>Cancel</Button>
           <Button
             onClick={onSubmit}
             disabled={hasErrors(allValues?.errors) || !isTouched(allValues?.touched)}

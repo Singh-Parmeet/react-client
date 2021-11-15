@@ -17,8 +17,12 @@ const SnackBarProvider = ({ children }) => {
   const { open, message, status } = snackBarValues;
 
   const openSnackBar = (msg, stat) => {
+    let newStatus = stat;
+    if (stat >= 400 && stat < 600) {
+      newStatus = 'error';
+    }
     setSnackBarValues({
-      ...snackBarValues, open: true, message: msg, status: stat,
+      ...snackBarValues, open: true, message: msg, status: newStatus,
     });
   };
 
@@ -34,7 +38,7 @@ const SnackBarProvider = ({ children }) => {
       <SnackBarContext.Provider value={openSnackBar}>
         {children}
       </SnackBarContext.Provider>
-      <Snackbar open={open} autoHideDuration={6000} onClose={closeSnackBar}>
+      <Snackbar open={open} autoHideDuration={2000} onClose={closeSnackBar}>
         <Alert onClose={closeSnackBar} severity={status} sx={{ width: '100%' }}>
           {message}
         </Alert>

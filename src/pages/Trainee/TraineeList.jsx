@@ -14,7 +14,8 @@ import { callApi } from '../../libs/utils/api';
 
 const TraineeList = (props) => {
   const { match, history } = props;
-  const limit = 10;
+  const limit = 7;
+  let skip;
   const schemaErrors = {};
   let validationResult = {};
   const openSnackBar = useContext(SnackBarContext);
@@ -23,7 +24,7 @@ const TraineeList = (props) => {
     editDialog: false,
     removeDialog: false,
   });
-  const [userData, setUserData] = useState({});
+  const [deletedUserData, DeletedUserData] = useState({});
   const [editFormValues, setEditFormValues] = useState({
     name: '',
     email: '',
@@ -65,6 +66,12 @@ const TraineeList = (props) => {
       }),
   });
 
+  // const editTraineeSchema = Yup.object({
+  //   name: Yup.string().min(3).max(10).label('Name')
+  //     .required(),
+  //   email: Yup.string().email('Email Address must be a valid email').label('Email').required(),
+  // });
+
   /**    Form Validation  */
 
   const handleErrors = (values) => {
@@ -81,10 +88,6 @@ const TraineeList = (props) => {
         }
         return schemaErrors;
       });
-  };
-
-  const handleAddDialogOpen = () => {
-    setDialog({ ...dialog, addDialog: true });
   };
 
   const onChangeHandler = async (event, type) => {
@@ -113,9 +116,8 @@ const TraineeList = (props) => {
   };
 
   /**   Dialogbox Handlers    */
-
-  const handleAddDialogClose = () => {
-    setDialog({ ...dialog, addDialog: false });
+  const handleAddDialogOpen = () => {
+    setDialog({ ...dialog, addDialog: true });
   };
 
   const handleEditDialogOpen = async (editData) => {
@@ -126,32 +128,17 @@ const TraineeList = (props) => {
     setDialog({ ...dialog, editDialog: true });
   };
 
-  const handleEditDialogClose = () => {
-    setDialog({ ...dialog, editDialog: false });
-  };
-
   const handleRemoveDialogOpen = (data) => {
-    setUserData(data);
+    DeletedUserData(data);
     setDialog({ ...dialog, removeDialog: true });
   };
 
-  const handleRemoveDialogClose = () => {
-    setDialog({ ...dialog, removeDialog: false });
-  };
-
-  const onSubmit = async () => {
-    setDialog({ ...dialog, addDialog: false });
-    const { data } = await callApi('user/', 'post', { name, email, role: 'trainee' });
-    console.log(data);
-    openSnackBar('Trainee Added Successfully', 'success');
-    setFormValues({
-      name: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-      touched: {},
-      errors: {},
-    });
+  const handleDialogClose = (type) => {
+    const newValue = {
+      ...dialog,
+      [type]: false,
+    };
+    setDialog(newValue);
   };
 
   /** Pagination Handler */
@@ -168,7 +155,7 @@ const TraineeList = (props) => {
   const findTrainee = (id) => trainees.find((item) => (item.originalId === id));
 
   /** link handlers */
-  const handleSelect = (field) => {
+  const handleOpenDetails = (field) => {
     const res = findTrainee(field);
     history.push(
       {
@@ -181,15 +168,60 @@ const TraineeList = (props) => {
   };
 
   /** User Handlers */
-  const handleDeleteUser = async () => {
-    const { originalId } = userData;
-    const data = await callApi('user/', 'delete', { originalId }, {});
-    console.log(data);
-    setDialog({ ...dialog, removeDialog: false });
-    const date = userData?.createdAt.split('T')[0];
-    const severity = moment(date).isBefore('2019-02-14') ? 'error' : 'success';
-    const msg = severity === 'error' ? 'Error: Cannot delete Trainee' : 'Trainee Deleted Successfully';
-    openSnackBar(msg, severity);
+  const onAddUser = async () => {
+    try {
+      setDialog({ ...dialog, addDialog: false });
+      if (page > 0 && trainees.length === limit) {
+        setPage(page + 1);
+      }
+      const { message, status } = await callApi('user/', 'post', { name, email, role: 'trainee' });
+      openSnackBar(message, status);
+      setFormValues({
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        touched: {},
+        errors: {},
+      });
+    } catch (err) {
+      openSnackBar(err, 'error');
+      setDialog({ ...dialog, addDialog: false });
+    }
+  };
+
+  const onDeleteUser = async () => {
+    try {
+      const { originalId, createdAt } = deletedUserData;
+      console.log(originalId, createdAt);
+      if (moment(createdAt).isBefore('2019-02-14')) {
+        openSnackBar('Error: Cannot delete User ', 'error');
+      } else {
+        const { status, message } = await callApi('user/', 'delete', { originalId }, {});
+        openSnackBar(message, status);
+        if (page > 0 && trainees.length === 1) {
+          setPage(page - 1);
+        }
+      }
+      setDialog({ ...dialog, removeDialog: false });
+    } catch (err) {
+      openSnackBar(err, 'error');
+      setDialog({ ...dialog, removeDialog: false });
+    }
+  };
+
+  const onEditUser = async () => {
+    try {
+      const { originalId, editedName, editedEmail } = editFormValues;
+      const { message, status } = await callApi('user/', 'put', {
+        originalId, name: editedName, role: 'trainee', email: editedEmail,
+      }, {});
+      setDialog({ ...dialog, editDialog: false });
+      openSnackBar(message, status);
+    } catch (err) {
+      openSnackBar(err, 'error');
+      setDialog({ ...dialog, editDialog: false });
+    }
   };
 
   const handleChangeData = (event, type) => {
@@ -202,21 +234,9 @@ const TraineeList = (props) => {
     };
     setEditFormValues(newValue);
   };
-
-  const onEditSubmit = async () => {
-    const { originalId, editedName, editedEmail } = editFormValues;
-
-    setDialog({ ...dialog, editDialog: false });
-    const data = await callApi('user/', 'put', {
-      originalId, name: editedName, role: 'trainee', email: editedEmail,
-    }, {});
-    console.log(data);
-    openSnackBar('Trainee Updated Successfully', 'success');
-  };
-
   const traineesListHandler = async () => {
     try {
-      const skip = limit * page;
+      skip = limit * page;
       setTraineesData({ ...traineesData, traineeLoader: true });
       const { data, total } = await callApi('user/', 'get', {}, { skip, limit });
       setTraineesData({
@@ -229,7 +249,9 @@ const TraineeList = (props) => {
 
   useEffect(() => {
     traineesListHandler();
-  }, [page, dialog.addDialog, dialog.removeDialog, dialog.editDialog]);
+    // return () => { console.log('clean up'); };
+  }, [skip, page, dialog]);
+
   return (
     <>
       <Button variant="outlined" onClick={handleAddDialogOpen}>
@@ -237,23 +259,23 @@ const TraineeList = (props) => {
       </Button>
       <AddDialog
         open={dialog?.addDialog}
-        onClose={handleAddDialogClose}
+        onClose={handleDialogClose}
         onBlurHandler={onBlurHandler}
         onChangeHandler={onChangeHandler}
         allValues={formValues}
-        onSubmit={onSubmit}
+        onSubmit={onAddUser}
       />
       <EditDialog
         open={dialog?.editDialog}
         editData={editFormValues}
-        onClose={handleEditDialogClose}
+        onClose={handleDialogClose}
         onHandleChangeData={handleChangeData}
-        onSubmit={onEditSubmit}
+        onSubmit={onEditUser}
       />
       <RemoveDialog
         open={dialog?.removeDialog}
-        onClose={handleRemoveDialogClose}
-        onDelete={handleDeleteUser}
+        onClose={handleDialogClose}
+        onSubmit={onDeleteUser}
       />
       <Box sx={{ margin: '20px' }}>
         <GenericTable
@@ -265,7 +287,7 @@ const TraineeList = (props) => {
           orderBy={orderBy}
           order={order}
           sort={handleSort}
-          select={handleSelect}
+          select={handleOpenDetails}
           count={count}
           page={page}
           rowsPerPage={limit}

@@ -61,7 +61,7 @@ const EditDialog = ({
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose}>Cancel</Button>
+          <Button onClick={() => { onClose('EditDialog'); }}>Cancel</Button>
           <Button
             disabled={!isTouched(touched)}
             onClick={onSubmit}
