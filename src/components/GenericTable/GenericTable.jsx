@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Table from '@mui/material/Table';
+import MuiTable from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
@@ -11,7 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import { StyledTableRow, StyledTableHeading } from './style';
 
-const GenericTable = (props) => {
+const Table = (props) => {
   const {
     id,
     columns,
@@ -21,7 +21,7 @@ const GenericTable = (props) => {
     <>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <TableContainer component={Paper} margin={5}>
-          <Table>
+          <MuiTable>
             <TableHead key={id}>
               {columns.map((column) => (
                 <StyledTableHeading
@@ -61,7 +61,7 @@ const GenericTable = (props) => {
                 </StyledTableRow>
               ))}
             </TableBody>
-          </Table>
+          </MuiTable>
         </TableContainer>
         <TablePagination
           rowsPerPageOptions={[]}
@@ -76,7 +76,7 @@ const GenericTable = (props) => {
   );
 };
 
-GenericTable.defaultProps = {
+Table.defaultProps = {
   orderBy: '',
   order: 'asc',
   page: 0,
@@ -84,7 +84,7 @@ GenericTable.defaultProps = {
   actions: [],
 };
 
-GenericTable.propTypes = {
+Table.propTypes = {
   id: PropTypes.string.isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -99,4 +99,4 @@ GenericTable.propTypes = {
   actions: PropTypes.arrayOf(PropTypes.object),
 };
 
-export default GenericTable;
+export default Table;

@@ -8,7 +8,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { AddDialog, EditDialog, RemoveDialog } from './components';
 import trainees from './data/trainee';
-import { GenericTable } from '../../components';
+import { Table } from '../../components';
 import { Columns } from '../../config/constant';
 import { SnackBarContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
 
@@ -204,7 +204,7 @@ const TraineeList = ({ match, history }) => {
         onDelete={handleDeleteUser}
       />
       <Box sx={{ margin: '20px' }}>
-        <GenericTable
+        <Table
           id="id"
           data={trainees}
           columns={Columns}
