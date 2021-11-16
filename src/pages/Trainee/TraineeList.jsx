@@ -222,7 +222,6 @@ const TraineeList = (props) => {
 
   useEffect(() => {
     traineesListHandler();
-    // return () => { console.log('clean up'); };
   }, [page, count]);
   return (
     <>
