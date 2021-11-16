@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { AddDialog, EditDialog, RemoveDialog } from './components';
-import { GenericTable } from '../../components';
+import { Table } from '../../components';
 import { Columns } from '../../config/constant';
 import { SnackBarContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
 import { callApi } from '../../libs/utils/api';
@@ -67,7 +67,7 @@ const TraineeList = (props) => {
 
   /**    Form Validation  */
 
-  const handleErrors = (values) => {
+  const handleErrors = async (values) => {
     const {
       name: newName, email: newEmail, password: newPassword, confirmPassword: newConfirmPassword,
     } = values;
@@ -249,7 +249,7 @@ const TraineeList = (props) => {
         onDelete={handleDeleteUser}
       />
       <Box sx={{ margin: '20px' }}>
-        <GenericTable
+        <Table
           loader={traineeLoader}
           dataLength={trainees?.length}
           id="id"
