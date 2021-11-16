@@ -59,7 +59,7 @@ const TraineeList = ({ match, history }) => {
 
   /**    Form Validation  */
 
-  const handleErrors = (values) => {
+  const handleErrors = async (values) => {
     const {
       name: newName, email: newEmail, password: newPassword, confirmPassword: newConfirmPassword,
     } = values;
