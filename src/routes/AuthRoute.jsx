@@ -1,26 +1,39 @@
 import React from 'react';
-import { PropTypes } from 'prop-types';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
 import { AuthLayout } from '../layouts';
 
-const AuthRoute = ({
-  exact,
-  path,
-  component: Component,
-}) => (
-  <Route
-    exact={exact}
-    path={path}
-    render={
-      () => <AuthLayout><Component /></AuthLayout>
+const AuthRoute = ({ component: Component, path }) => {
+  const token = localStorage.getItem('token');
+  const Rendering = (history) => {
+    if (!token) {
+      return (
+        <AuthLayout>
+          <Component history={history} />
+        </AuthLayout>
+      );
     }
-  />
-);
+    return (
+      <Redirect to="/trainee" />
+    );
+  };
+  return (
+    <Route
+      path={path}
+      exact
+      render={({ history }) => (
+        <>
+          {Rendering(history)}
+        </>
+      )}
+    />
+  );
+};
 
 AuthRoute.propTypes = {
-  exact: PropTypes.bool.isRequired,
-  path: PropTypes.string.isRequired,
   component: PropTypes.func.isRequired,
+  path: PropTypes.string.isRequired,
 };
 
 export default AuthRoute;

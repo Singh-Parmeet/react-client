@@ -7,31 +7,35 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import style from './style';
 
-const Navbar = () => (
-  <Box sx={{ flexGrow: 1 }}>
-    <AppBar position="static">
-      <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Trainee Portal
-        </Typography>
-        <Link to="/trainee" style={style.linkUnderline}>
-          <Button style={style.textColor} color="inherit">Trainee</Button>
-        </Link>
-        <Link to="/text-field-demo" style={style.linkUnderline}>
-          <Button style={style.textColor} color="inherit">TextField Demo</Button>
-        </Link>
-        <Link to="/input-demo" style={style.linkUnderline}>
-          <Button style={style.textColor} color="inherit">Input Demo</Button>
-        </Link>
-        <Link to="/children-demo" style={style.linkUnderline}>
-          <Button style={style.textColor} color="inherit">Children Demo</Button>
-        </Link>
-        <Link to="/logout" style={style.linkUnderline}>
-          <Button style={style.textColor} color="inherit">Logout</Button>
-        </Link>
-      </Toolbar>
-    </AppBar>
-  </Box>
-);
-
+const Navbar = () => {
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+  };
+  return (
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Trainee Portal
+          </Typography>
+          <Link to="/trainee" style={style.linkUnderline}>
+            <Button style={style.textColor} color="inherit">Trainee</Button>
+          </Link>
+          <Link to="/text-field-demo" style={style.linkUnderline}>
+            <Button style={style.textColor} color="inherit">TextField Demo</Button>
+          </Link>
+          <Link to="/input-demo" style={style.linkUnderline}>
+            <Button style={style.textColor} color="inherit">Input Demo</Button>
+          </Link>
+          <Link to="/children-demo" style={style.linkUnderline}>
+            <Button style={style.textColor} color="inherit">Children Demo</Button>
+          </Link>
+          <Link to="/logout" style={style.linkUnderline}>
+            <Button style={style.textColor} onClick={handleLogout} color="inherit">Logout</Button>
+          </Link>
+        </Toolbar>
+      </AppBar>
+    </Box>
+  );
+};
 export default Navbar;
