@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { AddDialog, EditDialog, RemoveDialog } from './components';
-import { GenericTable } from '../../components';
+import { Table } from '../../components';
 import { Columns } from '../../config/constant';
 import { SnackBarContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
 import { callApi } from '../../libs/utils/api';
@@ -66,15 +66,9 @@ const TraineeList = (props) => {
       }),
   });
 
-  // const editTraineeSchema = Yup.object({
-  //   name: Yup.string().min(3).max(10).label('Name')
-  //     .required(),
-  //   email: Yup.string().email('Email Address must be a valid email').label('Email').required(),
-  // });
-
   /**    Form Validation  */
 
-  const handleErrors = (values) => {
+  const handleErrors = async (values) => {
     const {
       name: newName, email: newEmail, password: newPassword, confirmPassword: newConfirmPassword,
     } = values;
@@ -249,7 +243,6 @@ const TraineeList = (props) => {
 
   useEffect(() => {
     traineesListHandler();
-    // return () => { console.log('clean up'); };
   }, [skip, page, dialog]);
 
   return (
@@ -278,7 +271,7 @@ const TraineeList = (props) => {
         onSubmit={onDeleteUser}
       />
       <Box sx={{ margin: '20px' }}>
-        <GenericTable
+        <Table
           loader={traineeLoader}
           dataLength={trainees?.length}
           id="id"
