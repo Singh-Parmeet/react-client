@@ -10,6 +10,7 @@ import TablePagination from '@mui/material/TablePagination';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import { StyledTableRow, StyledTableHeading } from './style';
+import { withLoaderAndMessage } from '../HOC';
 
 const Table = (props) => {
   const {
@@ -40,11 +41,11 @@ const Table = (props) => {
             </TableHead>
             <TableBody>
               {data.map((row) => (
-                <StyledTableRow key={row.id}>
+                <StyledTableRow key={row.originalId}>
                   {columns.map((column) => {
                     const value = row[column.field];
                     return (
-                      <TableCell key={`${row.id}${column.field}`} onClick={() => select(row.id)} align={column.align}>
+                      <TableCell key={`${row.id}${column.field}`} onClick={() => select(row.originalId)} align={column.align}>
                         {column.format ? column.format(value) : value}
                       </TableCell>
                     );
@@ -99,4 +100,4 @@ Table.propTypes = {
   actions: PropTypes.arrayOf(PropTypes.object),
 };
 
-export default Table;
+export default withLoaderAndMessage(Table);

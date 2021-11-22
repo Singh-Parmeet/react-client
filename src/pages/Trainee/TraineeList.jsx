@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -7,12 +7,14 @@ import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { AddDialog, EditDialog, RemoveDialog } from './components';
-import trainees from './data/trainee';
 import { Table } from '../../components';
 import { Columns } from '../../config/constant';
 import { SnackBarContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
+import { callApi } from '../../libs/utils/api';
 
-const TraineeList = ({ match, history }) => {
+const TraineeList = (props) => {
+  const { match, history } = props;
+  const limit = 10;
   const schemaErrors = {};
   let validationResult = {};
   const openSnackBar = useContext(SnackBarContext);
@@ -30,7 +32,6 @@ const TraineeList = ({ match, history }) => {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('');
   const [page, setPage] = useState(0);
-  const [rowsPerPage] = useState(10);
   const [formValues, setFormValues] = useState({
     name: '',
     email: '',
@@ -39,8 +40,15 @@ const TraineeList = ({ match, history }) => {
     touched: {},
     errors: {},
   });
-
-  const { touched } = formValues;
+  const [traineesData, setTraineesData] = useState(
+    {
+      trainees: [],
+      traineeLoader: false,
+      count: 0,
+    },
+  );
+  const { trainees, traineeLoader, count } = traineesData;
+  const { name, email, touched } = formValues;
 
   const traineeSchema = Yup.object({
     name: Yup.string().min(3).max(10).label('Name')
@@ -110,8 +118,11 @@ const TraineeList = ({ match, history }) => {
     setDialog({ ...dialog, addDialog: false });
   };
 
-  const handleEditDialogOpen = ({ name, email }) => {
-    setEditFormValues({ ...editFormValues, name, email });
+  const handleEditDialogOpen = (editData) => {
+    const { originalId, name: editedName, email: editedEmail } = editData;
+    setEditFormValues({
+      ...editFormValues, editedName, editedEmail, originalId,
+    });
     setDialog({ ...dialog, editDialog: true });
   };
 
@@ -128,9 +139,19 @@ const TraineeList = ({ match, history }) => {
     setDialog({ ...dialog, removeDialog: false });
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     setDialog({ ...dialog, addDialog: false });
+    const { data } = await callApi('user/', 'post', { name, email, role: 'trainee' });
+    console.log(data);
     openSnackBar('Trainee Added Successfully', 'success');
+    setFormValues({
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      touched: {},
+      errors: {},
+    });
   };
 
   /** Pagination Handler */
@@ -144,20 +165,28 @@ const TraineeList = ({ match, history }) => {
     setPage(newValue);
   };
 
-  /** link handlers */
+  const findTrainee = (id) => trainees.find((item) => (item.originalId === id));
 
+  /** link handlers */
   const handleSelect = (field) => {
-    history.push(`${match.path}/${field}`);
+    const res = findTrainee(field);
+    history.push(
+      {
+        pathname: `${match.path}/${field}`,
+        state: {
+          response: res,
+        },
+      },
+    );
   };
 
   /** User Handlers */
-
-  const handleDeleteUser = () => {
+  const handleDeleteUser = async () => {
     console.log('Deleted user', userData);
     setDialog({ ...dialog, removeDialog: false });
     const date = userData?.createdAt.split('T')[0];
     const severity = moment(date).isBefore('2019-02-14') ? 'error' : 'success';
-    const msg = severity === 'error' ? 'Error: Cannnot delete Trainee' : 'Trainee Deleted Successfully';
+    const msg = severity === 'error' ? 'Error: Cannot delete Trainee' : 'Trainee Deleted Successfully';
     openSnackBar(msg, severity);
   };
 
@@ -178,6 +207,22 @@ const TraineeList = ({ match, history }) => {
     openSnackBar('Trainee Updated Successfully', 'success');
   };
 
+  const traineesListHandler = async () => {
+    try {
+      const skip = limit * page;
+      setTraineesData({ ...traineesData, traineeLoader: true });
+      const { data, total } = await callApi('user/', 'get', {}, { skip, limit });
+      setTraineesData({
+        ...traineesData, trainees: data, traineeLoader: false, count: total,
+      });
+    } catch (err) {
+      setTraineesData({ ...traineesData, traineeLoader: false });
+    }
+  };
+
+  useEffect(() => {
+    traineesListHandler();
+  }, [page, count]);
   return (
     <>
       <Button variant="outlined" onClick={handleAddDialogOpen}>
@@ -205,6 +250,8 @@ const TraineeList = ({ match, history }) => {
       />
       <Box sx={{ margin: '20px' }}>
         <Table
+          loader={traineeLoader}
+          dataLength={trainees?.length}
           id="id"
           data={trainees}
           columns={Columns}
@@ -212,9 +259,9 @@ const TraineeList = ({ match, history }) => {
           order={order}
           sort={handleSort}
           select={handleSelect}
-          count={100}
+          count={count}
           page={page}
-          rowsPerPage={rowsPerPage}
+          rowsPerPage={limit}
           onChangePage={handleChangePage}
           actions={
             [
