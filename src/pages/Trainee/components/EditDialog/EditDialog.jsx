@@ -17,12 +17,12 @@ import { isTouched } from '../../../../helpers/helpers';
 const EditDialog = ({
   open, editData, onClose, onHandleChangeData, onSubmit,
 }) => {
-  const { name, email, touched } = editData;
+  const { editedName, editedEmail, touched } = editData;
 
   return (
     <Box>
       <Dialog open={open}>
-        <DialogTitle>Edit Trainee</DialogTitle>
+        <DialogTitle>Add Trainee</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Enter Your Trainee Details
@@ -31,9 +31,9 @@ const EditDialog = ({
             <Grid item xs={12}>
               <TextField
                 label="Name"
-                value={name}
+                value={editedName}
                 fullWidth
-                onChange={(event) => { onHandleChangeData(event, 'name'); }}
+                onChange={(event) => { onHandleChangeData(event, 'editedName'); }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -46,9 +46,9 @@ const EditDialog = ({
             <Grid item xs={12}>
               <TextField
                 label="Email"
-                value={email}
+                value={editedEmail}
                 fullWidth
-                onChange={(event) => { onHandleChangeData(event, 'email'); }}
+                onChange={(event) => { onHandleChangeData(event, 'editedEmail'); }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -61,7 +61,7 @@ const EditDialog = ({
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose}>Cancel</Button>
+          <Button onClick={() => { onClose('EditDialog'); }}>Cancel</Button>
           <Button
             disabled={!isTouched(touched)}
             onClick={onSubmit}
