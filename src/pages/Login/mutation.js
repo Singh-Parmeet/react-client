@@ -6,6 +6,8 @@ mutation LoginUser($email: String!, $password: String!) {
     data {
       token
     }
+    message
+    status
   }
 }
 `;

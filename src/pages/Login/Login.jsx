@@ -34,7 +34,7 @@ const Login = ({ history }) => {
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     onCompleted: (Data) => {
       const { data, message, status } = Data.loginUser;
-      localStorage.setItem('token', data);
+      localStorage.setItem('token', data.token);
       openSnackBar(message, status);
       history.push('/trainee');
     },
