@@ -29,14 +29,20 @@ const Login = ({ history }) => {
     touched: {},
     errors: {},
   });
-  const [loginUser, { loading, error }] = useMutation(LOGIN_USER, {
+  const openSnackBar = useContext(SnackBarContext);
+
+  const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     onCompleted: (Data) => {
-      console.log(Data);
-      localStorage.setItem('token', Data.loginUser.data.token);
+      const { data, message, status } = Data.loginUser;
+      localStorage.setItem('token', data);
+      openSnackBar(message, status);
+      history.push('/trainee');
+    },
+    onError: (err) => {
+      openSnackBar(err?.graphQLErrors[0]?.extensions?.response?.body.message || err?.message, 'error');
     },
   });
   const [isLoading, setIsLoading] = useState(loading);
-  const openSnackBar = useContext(SnackBarContext);
   const { email, password, touched } = loginValues;
 
   const traineeSchema = Yup.object({
@@ -86,16 +92,9 @@ const Login = ({ history }) => {
   };
 
   const handleLogin = async () => {
-    try {
-      setIsLoading(true);
-      const res = await loginUser({ variables: { email, password } });
-      setIsLoading(false);
-      openSnackBar('Successfully Logged In', 'success');
-      history.push('/trainee');
-    } catch (err) {
-      setIsLoading(false);
-      openSnackBar(err?.graphQLErrors[0]?.extensions.response.body.message || err?.message, 'error');
-    }
+    setIsLoading(true);
+    await loginUser({ variables: { email, password } });
+    setIsLoading(false);
   };
 
   return (
