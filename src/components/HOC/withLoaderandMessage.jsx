@@ -5,7 +5,6 @@ import Progress from '../Progress/Progress';
 
 const withLoaderAndMessage = (Component) => {
   const EnhancedComponent = (props) => {
-    console.log(props);
     const { dataLength, loader, ...rest } = props;
     if (loader) {
       return <Progress />;

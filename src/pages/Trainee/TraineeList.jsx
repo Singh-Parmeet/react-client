@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 import React, { useState, useContext, useEffect } from 'react';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
@@ -6,16 +8,18 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useLazyQuery } from '@apollo/client';
 import { AddDialog, EditDialog, RemoveDialog } from './components';
 import { Table } from '../../components';
 import { Columns } from '../../config/constant';
 import { SnackBarContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
 import { callApi } from '../../libs/utils/api';
+import { GET_ALL_USER } from './query';
 
 const TraineeList = (props) => {
   const { match, history } = props;
-  const limit = 7;
-  let skip;
+  const limit = 1;
+  // let skip;
   const schemaErrors = {};
   let validationResult = {};
   const openSnackBar = useContext(SnackBarContext);
@@ -48,8 +52,14 @@ const TraineeList = (props) => {
       count: 0,
     },
   );
+  const [skip, setSkip] = useState(0);
   const { trainees, traineeLoader, count } = traineesData;
   const { name, email, touched } = formValues;
+  const [getAllUser] = useLazyQuery(GET_ALL_USER,
+    {
+      variables: { skip, limit },
+      fetchPolicy: 'cache-and-network',
+    });
 
   const traineeSchema = Yup.object({
     name: Yup.string().min(3).max(10).label('Name')
@@ -230,14 +240,17 @@ const TraineeList = (props) => {
   };
   const traineesListHandler = async () => {
     try {
-      skip = limit * page;
+      setSkip(limit * page);
       setTraineesData({ ...traineesData, traineeLoader: true });
-      const { data, total } = await callApi('user/', 'get', {}, { skip, limit });
+      const { data: allUsersData } = await getAllUser();
+      console.log(allUsersData);
+      const { getAllUser: { data, total } } = allUsersData;
       setTraineesData({
         ...traineesData, trainees: data, traineeLoader: false, count: total,
       });
     } catch (err) {
       setTraineesData({ ...traineesData, traineeLoader: false });
+      openSnackBar(err?.graphQLErrors[0]?.extensions?.response?.body.message || err?.message, 'error');
     }
   };
 
