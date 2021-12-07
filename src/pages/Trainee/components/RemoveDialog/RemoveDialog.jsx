@@ -18,7 +18,7 @@ const RemoveDialog = ({ open, onClose, onSubmit }) => (
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => { onClose('RemoveDialog'); }}>Cancel</Button>
+        <Button onClick={() => { onClose('removeDialog'); }}>Cancel</Button>
         <Button variant="contained" onClick={onSubmit}> DELETE </Button>
       </DialogActions>
     </Dialog>

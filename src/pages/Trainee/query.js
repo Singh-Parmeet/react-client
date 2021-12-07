@@ -8,11 +8,11 @@ query GetAllUser($skip: Int!, $limit: Int!) {
      name
      email
      createdAt
+     originalId
    }
   }
 }
 `;
-
 export {
   GET_ALL_USER,
 };

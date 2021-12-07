@@ -8,13 +8,14 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useLazyQuery } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { AddDialog, EditDialog, RemoveDialog } from './components';
 import { Table } from '../../components';
 import { Columns } from '../../config/constant';
 import { SnackBarContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
-import { callApi } from '../../libs/utils/api';
+// import { callApi } from '../../libs/utils/api';
 import { GET_ALL_USER } from './query';
+import { CREATE_USER, UPDATE_USER, DELETE_USER } from './mutation';
 
 const TraineeList = (props) => {
   const { match, history } = props;
@@ -30,8 +31,9 @@ const TraineeList = (props) => {
   });
   const [deletedUserData, DeletedUserData] = useState({});
   const [editFormValues, setEditFormValues] = useState({
-    name: '',
-    email: '',
+    editedName: '',
+    editedEmail: '',
+    originalId: '',
     touched: {},
   });
   const [order, setOrder] = useState('asc');
@@ -55,11 +57,36 @@ const TraineeList = (props) => {
   const [skip, setSkip] = useState(0);
   const { trainees, traineeLoader, count } = traineesData;
   const { name, email, touched } = formValues;
+  const { originalId, editedName, editedEmail } = editFormValues;
+  const { originalId: deletedOriginalId, createdAt } = deletedUserData;
+
+  // GraphQL  //
   const [getAllUser] = useLazyQuery(GET_ALL_USER,
     {
       variables: { skip, limit },
       fetchPolicy: 'cache-and-network',
     });
+
+  const [createUser] = useMutation(CREATE_USER, {
+    variables: { name, email, role: 'trainee' },
+    refetchQueries: [GET_ALL_USER],
+
+  });
+
+  const [updateUser] = useMutation(UPDATE_USER, {
+    variables: {
+      originalId, editedName, editedEmail, role: 'trainee',
+    },
+    refetchQueries: [GET_ALL_USER],
+  });
+
+  const [deleteUser] = useMutation(
+    DELETE_USER,
+    {
+      variables: { deletedOriginalId },
+      refetchQueries: [GET_ALL_USER],
+    },
+  );
 
   const traineeSchema = Yup.object({
     name: Yup.string().min(3).max(10).label('Name')
@@ -125,9 +152,11 @@ const TraineeList = (props) => {
   };
 
   const handleEditDialogOpen = async (editData) => {
-    const { originalId, name: editedName, email: editedEmail } = editData;
     setEditFormValues({
-      ...editFormValues, originalId, editedName, editedEmail,
+      ...editFormValues,
+      originalId: editData.originalId,
+      editedName: editData.name,
+      editedEmail: editData.email,
     });
     setDialog({ ...dialog, editDialog: true });
   };
@@ -178,8 +207,9 @@ const TraineeList = (props) => {
       if (page > 0 && trainees.length === limit) {
         setPage(page + 1);
       }
-      const { message, status } = await callApi('user/', 'post', { name, email, role: 'trainee' });
+      const { data: { createUser: { message, status } } } = await createUser();
       openSnackBar(message, status);
+      setDialog({ ...dialog, addDialog: false });
       setFormValues({
         name: '',
         email: '',
@@ -196,12 +226,11 @@ const TraineeList = (props) => {
 
   const onDeleteUser = async () => {
     try {
-      const { originalId, createdAt } = deletedUserData;
       console.log(originalId, createdAt);
       if (moment(createdAt).isBefore('2019-02-14')) {
         openSnackBar('Error: Cannot delete User ', 'error');
       } else {
-        const { status, message } = await callApi('user/', 'delete', { originalId }, {});
+        const { data: { deleteUser: { message, status } } } = await deleteUser();
         openSnackBar(message, status);
         if (page > 0 && trainees.length === 1) {
           setPage(page - 1);
@@ -209,21 +238,18 @@ const TraineeList = (props) => {
       }
       setDialog({ ...dialog, removeDialog: false });
     } catch (err) {
-      openSnackBar(err, 'error');
+      openSnackBar(err.message, 'error');
       setDialog({ ...dialog, removeDialog: false });
     }
   };
 
   const onEditUser = async () => {
     try {
-      const { originalId, editedName, editedEmail } = editFormValues;
-      const { message, status } = await callApi('user/', 'put', {
-        originalId, name: editedName, role: 'trainee', email: editedEmail,
-      }, {});
-      setDialog({ ...dialog, editDialog: false });
+      const { data: { updateUser: { message, status } } } = await updateUser();
       openSnackBar(message, status);
+      setDialog({ ...dialog, editDialog: false });
     } catch (err) {
-      openSnackBar(err, 'error');
+      openSnackBar(err.message, 'error');
       setDialog({ ...dialog, editDialog: false });
     }
   };
@@ -250,7 +276,7 @@ const TraineeList = (props) => {
       });
     } catch (err) {
       setTraineesData({ ...traineesData, traineeLoader: false });
-      openSnackBar(err?.graphQLErrors[0]?.extensions?.response?.body.message || err?.message, 'error');
+      openSnackBar(err?.message, 'error');
     }
   };
 

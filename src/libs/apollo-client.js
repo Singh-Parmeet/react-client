@@ -42,9 +42,6 @@ const link = split(
   httpLink,
 );
 
-/* const setHeaders = (opersation) =>
-operation.setContext({ headers: { authorization: localStorage.getItem('Token') } }); */
-
 const client = new ApolloClient({
   link: concat(authLink, link),
   cache: new InMemoryCache(),
