@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useContext } from 'react';
 import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
@@ -13,9 +14,11 @@ import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import LockRoundedIcon from '@mui/icons-material/LockRounded';
 import * as Yup from 'yup';
+import { useMutation } from '@apollo/client';
 import { getError, hasErrors, isTouched } from '../../helpers/helpers';
-import { callApi } from '../../libs/utils/api';
+// import { callApi } from '../../libs/utils/api';
 import { SnackBarContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
+import { LOGIN_USER } from './mutation';
 
 const Login = ({ history }) => {
   const schemaErrors = {};
@@ -26,8 +29,20 @@ const Login = ({ history }) => {
     touched: {},
     errors: {},
   });
-  const [loading, setLoading] = useState(false);
   const openSnackBar = useContext(SnackBarContext);
+
+  const [loginUser, { loading }] = useMutation(LOGIN_USER, {
+    onCompleted: (Data) => {
+      const { data, message, status } = Data.loginUser;
+      localStorage.setItem('token', data.token);
+      openSnackBar(message, status);
+      history.push('/trainee');
+    },
+    onError: (err) => {
+      openSnackBar(err?.graphQLErrors[0]?.extensions?.response?.body.message || err?.message, 'error');
+    },
+  });
+  const [isLoading, setIsLoading] = useState(loading);
   const { email, password, touched } = loginValues;
 
   const traineeSchema = Yup.object({
@@ -77,23 +92,9 @@ const Login = ({ history }) => {
   };
 
   const handleLogin = async () => {
-    setLoading(true);
-    const loginCredential = {
-      email,
-      password,
-    };
-    const { data } = await callApi('user/createToken', 'post', loginCredential);
-    setTimeout(() => {
-      if (data) {
-        localStorage.setItem('token', data.token);
-        setLoading(false);
-        openSnackBar('Successfully Logged In', 'success');
-        history.push('/trainee');
-      } else {
-        setLoading(false);
-        openSnackBar('Invalid Login Credential', 'error');
-      }
-    }, [2000]);
+    setIsLoading(true);
+    await loginUser({ variables: { email, password } });
+    setIsLoading(false);
   };
 
   return (
@@ -162,7 +163,7 @@ const Login = ({ history }) => {
             variant="contained"
             fullWidth
             sx={{ my: 2 }}
-            loading={loading}
+            loading={isLoading}
             disabled={hasErrors(loginValues?.errors) || !isTouched(loginValues?.touched)}
             onClick={() => (handleLogin())}
           >
