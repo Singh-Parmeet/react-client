@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation, useSubscription } from '@apollo/client';
 import { AddDialog, EditDialog, RemoveDialog } from './components';
 import { Table } from '../../components';
 import { Columns } from '../../config/constant';
@@ -16,10 +16,11 @@ import { SnackBarContext } from '../../contexts/SnackBarProvider/SnackBarProvide
 // import { callApi } from '../../libs/utils/api';
 import { GET_ALL_USER } from './query';
 import { CREATE_USER, UPDATE_USER, DELETE_USER } from './mutation';
+import { TRAINEE_UPDATED_SUBSCRIPTION, TRAINEE_DELETED_SUBSCRIPTION } from './subscription';
 
 const TraineeList = (props) => {
   const { match, history } = props;
-  const limit = 1;
+  const limit = 5;
   // let skip;
   const schemaErrors = {};
   let validationResult = {};
@@ -61,10 +62,16 @@ const TraineeList = (props) => {
   const { originalId: deletedOriginalId, createdAt } = deletedUserData;
 
   // GraphQL  //
-  const [getAllUser] = useLazyQuery(GET_ALL_USER,
+  const [getAllUser, { subscribeToMore }] = useLazyQuery(GET_ALL_USER,
     {
       variables: { skip, limit },
       fetchPolicy: 'cache-and-network',
+      onCompleted: (allUsersData) => {
+        const { getAllUser: { data, total } } = allUsersData;
+        setTraineesData({
+          ...traineesData, trainees: data, traineeLoader: false, count: total,
+        });
+      },
     });
 
   const [createUser] = useMutation(CREATE_USER, {
@@ -268,17 +275,64 @@ const TraineeList = (props) => {
     try {
       setSkip(limit * page);
       setTraineesData({ ...traineesData, traineeLoader: true });
-      const { data: allUsersData } = await getAllUser();
-      console.log(allUsersData);
-      const { getAllUser: { data, total } } = allUsersData;
-      setTraineesData({
-        ...traineesData, trainees: data, traineeLoader: false, count: total,
-      });
+      await getAllUser();
     } catch (err) {
       setTraineesData({ ...traineesData, traineeLoader: false });
       openSnackBar(err?.message, 'error');
     }
   };
+
+  useEffect(() => {
+    subscribeToMore({
+      document: TRAINEE_UPDATED_SUBSCRIPTION,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        const { data: { userUpdated } } = subscriptionData;
+        const { getAllUser: { data } } = prev;
+        console.log('subscriptionData', subscriptionData);
+        console.log('userUpdated', userUpdated);
+        console.log('prev', prev);
+        const newFeedItem = data.map((item) => {
+          if (item.originalId === userUpdated.data.originalId) {
+            return {
+              ...item, ...userUpdated.data,
+            };
+          }
+          return item;
+        });
+        const getAllUsers = {
+          ...prev.getAllUser,
+          data: [
+            ...newFeedItem,
+          ],
+
+        };
+        return {
+          getAllUser: getAllUsers,
+        };
+      },
+    });
+    subscribeToMore({
+      document: TRAINEE_DELETED_SUBSCRIPTION,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData) return prev;
+        const { data: { userDeleted } } = subscriptionData;
+        const { getAllUser: { data } } = prev;
+        console.log(subscriptionData);
+        console.log('prev', prev);
+        // eslint-disable-next-line max-len
+        const deletedRecords = data.filter((record) => record.originalId !== userDeleted.originalId);
+        return {
+          getAllUser: {
+            ...prev.getAllUser,
+            data: [
+              ...deletedRecords,
+            ],
+          },
+        };
+      },
+    });
+  }, []);
 
   useEffect(() => {
     traineesListHandler();
