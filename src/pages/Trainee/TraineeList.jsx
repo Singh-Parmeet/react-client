@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useLazyQuery, useMutation, useSubscription } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { AddDialog, EditDialog, RemoveDialog } from './components';
 import { Table } from '../../components';
 import { Columns } from '../../config/constant';
@@ -289,9 +289,6 @@ const TraineeList = (props) => {
         if (!subscriptionData.data) return prev;
         const { data: { userUpdated } } = subscriptionData;
         const { getAllUser: { data } } = prev;
-        console.log('subscriptionData', subscriptionData);
-        console.log('userUpdated', userUpdated);
-        console.log('prev', prev);
         const newFeedItem = data.map((item) => {
           if (item.originalId === userUpdated.data.originalId) {
             return {
@@ -318,8 +315,7 @@ const TraineeList = (props) => {
         if (!subscriptionData) return prev;
         const { data: { userDeleted } } = subscriptionData;
         const { getAllUser: { data } } = prev;
-        console.log(subscriptionData);
-        console.log('prev', prev);
+
         // eslint-disable-next-line max-len
         const deletedRecords = data.filter((record) => record.originalId !== userDeleted.originalId);
         return {
