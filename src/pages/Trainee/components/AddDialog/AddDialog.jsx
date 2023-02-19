@@ -1,6 +1,5 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import TextField from '@mui/material/TextField';
@@ -20,23 +19,23 @@ const AddDialog = (props) => {
     open, onClose, onSubmit, onChangeHandler, onBlurHandler, allValues,
   } = props;
   return (
-    <Box m={2}>
+    <>
       <Dialog open={open}>
-        <DialogTitle>Add Trainee</DialogTitle>
+        <DialogTitle>Add Todo List</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Enter Your Trainee Details
+            Enter The Details
           </DialogContentText>
           <Grid container spacing={6}>
             <Grid item xs={12}>
               <TextField
-                error={getError(allValues, 'name') || false}
-                label="Name"
-                value={allValues?.name}
-                helperText={getError(allValues, 'name')}
+                error={getError(allValues, 'title') || false}
+                label="Title"
+                value={allValues?.title}
+                helperText={getError(allValues, 'title')}
                 fullWidth
-                onChange={(event) => { onChangeHandler(event, 'name'); }}
-                onBlur={(event) => { onBlurHandler(event, 'name'); }}
+                onChange={(event) => { onChangeHandler(event, 'title'); }}
+                onBlur={(event) => { onBlurHandler(event, 'title'); }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -48,55 +47,17 @@ const AddDialog = (props) => {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                error={getError(allValues, 'email') || false}
-                label="Email"
-                value={allValues?.email}
-                helperText={getError(allValues, 'email')}
+                error={getError(allValues, 'description') || false}
+                label="Description"
+                value={allValues?.description}
+                helperText={getError(allValues, 'description')}
                 fullWidth
-                onChange={(event) => { onChangeHandler(event, 'email'); }}
-                onBlur={(event) => { onBlurHandler(event, 'email'); }}
+                onChange={(event) => { onChangeHandler(event, 'description'); }}
+                onBlur={(event) => { onBlurHandler(event, 'description'); }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
                       <PersonIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                error={getError(allValues, 'password') || false}
-                label="Password"
-                type="password"
-                helperText={getError(allValues, 'password')}
-                value={allValues?.password}
-                fullWidth
-                onChange={(event) => { onChangeHandler(event, 'password'); }}
-                onBlur={(event) => { onBlurHandler(event, 'password'); }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Visibility />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                error={getError(allValues, 'confirmPassword') || false}
-                label="Confirm Password"
-                type="password"
-                helperText={getError(allValues, 'confirmPassword')}
-                value={allValues?.confirmPassword}
-                fullWidth
-                onChange={(event) => { onChangeHandler(event, 'confirmPassword'); }}
-                onBlur={(event) => { onBlurHandler(event, 'confirmPassword'); }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Visibility />
                     </InputAdornment>
                   ),
                 }}
@@ -114,7 +75,7 @@ const AddDialog = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </Box>
+    </>
   );
 };
 

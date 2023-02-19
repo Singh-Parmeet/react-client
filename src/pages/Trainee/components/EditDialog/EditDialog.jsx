@@ -22,10 +22,10 @@ const EditDialog = ({
   return (
     <Box>
       <Dialog open={open}>
-        <DialogTitle>Add Trainee</DialogTitle>
+        <DialogTitle>Add Todo List</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Enter Your Trainee Details
+            Enter The Details
           </DialogContentText>
           <Grid container spacing={6}>
             <Grid item xs={12}>
