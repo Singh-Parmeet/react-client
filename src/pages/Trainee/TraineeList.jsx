@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-globals */
+/* eslint-disable import/no-extraneous-dependencies */
 import React, { useState, useContext, useEffect } from 'react';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
@@ -15,6 +17,7 @@ import { callApi } from '../../libs/utils/api';
 const TraineeList = (props) => {
   const { match, history } = props;
   const limit = 10;
+  let skip;
   const schemaErrors = {};
   let validationResult = {};
   const openSnackBar = useContext(SnackBarContext);
@@ -23,20 +26,19 @@ const TraineeList = (props) => {
     editDialog: false,
     removeDialog: false,
   });
-  const [userData, setUserData] = useState({});
+  const [deletedUserData, DeletedUserData] = useState({});
+  // const [userData, setUserData] = useState({});
   const [editFormValues, setEditFormValues] = useState({
-    name: '',
-    email: '',
+    status: '',
     touched: {},
   });
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('');
   const [page, setPage] = useState(0);
   const [formValues, setFormValues] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+    title: '',
+    description: '',
+    status: '',
     touched: {},
     errors: {},
   });
@@ -48,31 +50,27 @@ const TraineeList = (props) => {
     },
   );
   const { trainees, traineeLoader, count } = traineesData;
-  const { name, email, touched } = formValues;
+  const {
+    title, description, touched,
+  } = formValues;
 
   const traineeSchema = Yup.object({
-    name: Yup.string().min(3).max(10).label('Name')
+    title: Yup.string().min(3).max(10).label('Title')
       .required(),
-    email: Yup.string().email('Email Address must be a valid email').label('Email').required(),
-    password: Yup.string()
-      .matches(/^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/, 'Must contains 8 characters, at least one uppercase letter,one lowercase letter and one number')
-      .required('Password is a required field'),
-    confirmPassword: Yup.string()
-      .required('Please confirm your password')
-      .when('password', {
-        is: (password) => (!!(password && password.length > 0)),
-        then: Yup.string().oneOf([Yup.ref('password')], "Password doesn't match"),
-      }),
+    description: Yup.string().min(3).max(50).label('Description')
+      .required(),
+    status: Yup.string().min(3).max(10).label('Status')
+      .required(),
   });
 
   /**    Form Validation  */
 
   const handleErrors = async (values) => {
     const {
-      name: newName, email: newEmail, password: newPassword, confirmPassword: newConfirmPassword,
+      title: newTitle, description: newDescription, status: newStatus,
     } = values;
     return traineeSchema.validate({
-      name: newName, email: newEmail, password: newPassword, confirmPassword: newConfirmPassword,
+      title: newTitle, description: newDescription, status: newStatus,
     }, { abortEarly: false })
       .then(() => ({}))
       .catch((allErrors) => {
@@ -95,6 +93,7 @@ const TraineeList = (props) => {
       touched,
       [type]: value,
     };
+    // console.log('>>>>>>>>>>>>>>>>>newValue', newValue);
     validationResult = await handleErrors(newValue);
     setFormValues({ ...newValue, errors: validationResult });
   };
@@ -119,9 +118,9 @@ const TraineeList = (props) => {
   };
 
   const handleEditDialogOpen = (editData) => {
-    const { originalId, name: editedName, email: editedEmail } = editData;
+    const { originalId, status: editedStatus } = editData;
     setEditFormValues({
-      ...editFormValues, editedName, editedEmail, originalId,
+      ...editFormValues, editedStatus, originalId,
     });
     setDialog({ ...dialog, editDialog: true });
   };
@@ -131,27 +130,12 @@ const TraineeList = (props) => {
   };
 
   const handleRemoveDialogOpen = (data) => {
-    setUserData(data);
+    DeletedUserData(data);
     setDialog({ ...dialog, removeDialog: true });
   };
 
   const handleRemoveDialogClose = () => {
     setDialog({ ...dialog, removeDialog: false });
-  };
-
-  const onSubmit = async () => {
-    setDialog({ ...dialog, addDialog: false });
-    const { data } = await callApi('user/', 'post', { name, email, role: 'trainee' });
-    console.log(data);
-    openSnackBar('Trainee Added Successfully', 'success');
-    setFormValues({
-      name: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-      touched: {},
-      errors: {},
-    });
   };
 
   /** Pagination Handler */
@@ -167,6 +151,15 @@ const TraineeList = (props) => {
 
   const findTrainee = (id) => trainees.find((item) => (item.originalId === id));
 
+  // const handClick = async () => {
+  //   try {
+  //     const { message } = await callApi('todo/streams', 'get');
+  //     openSnackBar(message, 'success');
+  //   } catch (err) {
+  //     openSnackBar(err, 'error');
+  //   }
+  // };
+
   /** link handlers */
   const handleSelect = (field) => {
     const res = findTrainee(field);
@@ -181,13 +174,47 @@ const TraineeList = (props) => {
   };
 
   /** User Handlers */
-  const handleDeleteUser = async () => {
-    console.log('Deleted user', userData);
-    setDialog({ ...dialog, removeDialog: false });
-    const date = userData?.createdAt.split('T')[0];
-    const severity = moment(date).isBefore('2019-02-14') ? 'error' : 'success';
-    const msg = severity === 'error' ? 'Error: Cannot delete Trainee' : 'Trainee Deleted Successfully';
-    openSnackBar(msg, severity);
+
+  const onAddUser = async () => {
+    try {
+      setDialog({ ...dialog, addDialog: false });
+      if (page > 0 && trainees.length === limit) {
+        setPage(page + 1);
+      }
+      const { status: formStatus } = formValues;
+      const { message } = await callApi('form/', 'post', { title, description, status: formStatus });
+      openSnackBar(message, 'success');
+      setFormValues({
+        title: '',
+        description: '',
+        status: '',
+        touched: {},
+        errors: {},
+      });
+    } catch (err) {
+      openSnackBar(err, 'error');
+      setDialog({ ...dialog, addDialog: false });
+    }
+  };
+
+  const onDeleteUser = async () => {
+    try {
+      const { originalId, createdAt } = deletedUserData;
+      console.log(originalId, createdAt);
+      if (moment(createdAt).isBefore('2022-02-20')) {
+        openSnackBar('Error: Cannot delete List ', 'error');
+      } else {
+        const { status, message } = await callApi('todo/', 'delete', { originalId }, {});
+        openSnackBar(message, status);
+        if (page > 0 && trainees.length === 1) {
+          setPage(page - 1);
+        }
+      }
+      setDialog({ ...dialog, removeDialog: false });
+    } catch (err) {
+      openSnackBar(err, 'error');
+      setDialog({ ...dialog, removeDialog: false });
+    }
   };
 
   const handleChangeData = (event, type) => {
@@ -201,17 +228,25 @@ const TraineeList = (props) => {
     setEditFormValues(newValue);
   };
 
-  const onEditSubmit = () => {
-    console.log(editFormValues);
-    setDialog({ ...dialog, editDialog: false });
-    openSnackBar('Trainee Updated Successfully', 'success');
+  const onEditUser = async () => {
+    try {
+      const { originalId, editedStatus } = editFormValues;
+      const { message } = await callApi('todo/', 'put', {
+        originalId, status: editedStatus,
+      }, {});
+      setDialog({ ...dialog, editDialog: false });
+      openSnackBar(message, 'success');
+    } catch (err) {
+      openSnackBar(err, 'error');
+      setDialog({ ...dialog, editDialog: false });
+    }
   };
 
-  const traineesListHandler = async () => {
+  const listHandler = async () => {
     try {
-      const skip = limit * page;
+      skip = limit * page;
       setTraineesData({ ...traineesData, traineeLoader: true });
-      const { data, total } = await callApi('user/', 'get', {}, { skip, limit });
+      const { data, total } = await callApi('form/cron/', 'get', {}, { skip, limit });
       setTraineesData({
         ...traineesData, trainees: data, traineeLoader: false, count: total,
       });
@@ -221,12 +256,19 @@ const TraineeList = (props) => {
   };
 
   useEffect(() => {
-    traineesListHandler();
-  }, [page, count]);
+    const intervalId = setInterval(() => {
+      listHandler();
+    }, 60000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [skip, page, dialog]);
+  console.log('>>>>>>>>>>..formValues', formValues);
   return (
     <>
       <Button variant="outlined" onClick={handleAddDialogOpen}>
-        Add Trainee
+        Add List
       </Button>
       <AddDialog
         open={dialog?.addDialog}
@@ -234,20 +276,23 @@ const TraineeList = (props) => {
         onBlurHandler={onBlurHandler}
         onChangeHandler={onChangeHandler}
         allValues={formValues}
-        onSubmit={onSubmit}
+        onSubmit={onAddUser}
       />
       <EditDialog
         open={dialog?.editDialog}
         editData={editFormValues}
         onClose={handleEditDialogClose}
         onHandleChangeData={handleChangeData}
-        onSubmit={onEditSubmit}
+        onSubmit={onEditUser}
       />
       <RemoveDialog
         open={dialog?.removeDialog}
         onClose={handleRemoveDialogClose}
-        onDelete={handleDeleteUser}
+        onDelete={onDeleteUser}
       />
+      <br />
+      {/* <Button variant="outlined" onClick={handClick}>Fetch Data</Button> */}
+      <br />
       <Box sx={{ margin: '20px' }}>
         <Table
           loader={traineeLoader}

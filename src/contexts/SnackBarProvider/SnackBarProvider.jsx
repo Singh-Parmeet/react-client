@@ -17,8 +17,12 @@ const SnackBarProvider = ({ children }) => {
   const { open, message, status } = snackBarValues;
 
   const openSnackBar = (msg, stat) => {
+    let newStatus = stat;
+    if (stat >= 400 && stat < 600) {
+      newStatus = 'error';
+    }
     setSnackBarValues({
-      ...snackBarValues, open: true, message: msg, status: stat,
+      ...snackBarValues, open: true, message: msg, status: newStatus,
     });
   };
 

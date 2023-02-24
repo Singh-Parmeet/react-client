@@ -10,7 +10,7 @@ const withLoaderAndMessage = (Component) => {
       return <h1>Loading.......</h1>;
     }
     if (dataLength === 0) {
-      return <h2>OOPS!, No More Trainees</h2>;
+      return <h2>OOPS!, No List Found !</h2>;
     }
     return (
       <>

@@ -11,29 +11,29 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import InputAdornment from '@mui/material/InputAdornment';
 import PersonIcon from '@mui/icons-material/Person';
-import EmailIcon from '@mui/icons-material/Email';
+// import EmailIcon from '@mui/icons-material/Email';
 import { isTouched } from '../../../../helpers/helpers';
 
 const EditDialog = ({
   open, editData, onClose, onHandleChangeData, onSubmit,
 }) => {
-  const { name, email, touched } = editData;
+  const { status, touched } = editData;
 
   return (
     <Box>
       <Dialog open={open}>
-        <DialogTitle>Edit Trainee</DialogTitle>
+        <DialogTitle>Edit List</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Enter Your Trainee Details
+            Enter The Details
           </DialogContentText>
           <Grid container spacing={6}>
             <Grid item xs={12}>
               <TextField
-                label="Name"
-                value={name}
+                label="Status"
+                value={status}
                 fullWidth
-                onChange={(event) => { onHandleChangeData(event, 'name'); }}
+                onChange={(event) => { onHandleChangeData(event, 'status'); }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -43,12 +43,12 @@ const EditDialog = ({
                 }}
               />
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <TextField
-                label="Email"
-                value={email}
+                label="Description"
+                value={description}
                 fullWidth
-                onChange={(event) => { onHandleChangeData(event, 'email'); }}
+                onChange={(event) => { onHandleChangeData(event, 'description'); }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -57,7 +57,7 @@ const EditDialog = ({
                   ),
                 }}
               />
-            </Grid>
+            </Grid> */}
           </Grid>
         </DialogContent>
         <DialogActions>

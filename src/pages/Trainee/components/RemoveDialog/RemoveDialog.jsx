@@ -11,10 +11,10 @@ import DialogTitle from '@mui/material/DialogTitle';
 const RemoveDialog = ({ open, onClose, onDelete }) => (
   <Box>
     <Dialog open={open} fullWidth>
-      <DialogTitle>Remove Trainee</DialogTitle>
+      <DialogTitle>Remove List</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Do you really want to remove trainee?
+          Do you really want to remove todo list?
         </DialogContentText>
       </DialogContent>
       <DialogActions>

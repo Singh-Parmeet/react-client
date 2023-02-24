@@ -33,7 +33,7 @@ const TraineeDetail = ({ location }) => {
         </Box>
       </Card>
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Link to="/trainee"><Button variant="contained" sx={{ marginTop: '10px', background: '#ccc' }}>Back</Button></Link>
+        <Link to="/"><Button variant="contained" sx={{ marginTop: '10px', background: '#ccc' }}>Back</Button></Link>
       </Box>
     </>
   );

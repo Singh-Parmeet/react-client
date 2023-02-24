@@ -65,18 +65,19 @@ export const ERRORS = {
   },
 };
 
-export const MathResult = ({
-  first, second, result,
-}) => (`Sum of ${first} and ${second} is ${result}`);
-
 export const Columns = [{
-  field: 'name',
-  label: 'Name',
+  field: 'title',
+  label: 'TITLE',
 },
 {
-  field: 'email',
-  label: 'Email Address',
-  format: (value) => value && value.toUpperCase(),
+  field: 'description',
+  label: 'DESCRIPTION',
+  // format: (value) => value && value.toUpperCase(),
+},
+{
+  field: 'status',
+  label: 'Status',
+  // format: (value) => value && value.toUpperCase(),
 },
 {
   field: 'createdAt',

@@ -11,7 +11,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import InputAdornment from '@mui/material/InputAdornment';
 import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
-import Visibility from '@mui/icons-material/Visibility';
+// import Visibility from '@mui/icons-material/Visibility';
 import Grid from '@mui/material/Grid';
 import { getError, hasErrors, isTouched } from '../../../../helpers/helpers';
 
@@ -22,21 +22,21 @@ const AddDialog = (props) => {
   return (
     <Box m={2}>
       <Dialog open={open}>
-        <DialogTitle>Add Trainee</DialogTitle>
+        <DialogTitle>Add Todo List</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Enter Your Trainee Details
+            Enter The Details
           </DialogContentText>
           <Grid container spacing={6}>
             <Grid item xs={12}>
               <TextField
-                error={getError(allValues, 'name') || false}
-                label="Name"
-                value={allValues?.name}
-                helperText={getError(allValues, 'name')}
+                error={getError(allValues, 'title') || false}
+                label="Title"
+                value={allValues?.title}
+                helperText={getError(allValues, 'title')}
                 fullWidth
-                onChange={(event) => { onChangeHandler(event, 'name'); }}
-                onBlur={(event) => { onBlurHandler(event, 'name'); }}
+                onChange={(event) => { onChangeHandler(event, 'title'); }}
+                onBlur={(event) => { onBlurHandler(event, 'title'); }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -48,13 +48,13 @@ const AddDialog = (props) => {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                error={getError(allValues, 'email') || false}
-                label="Email"
-                value={allValues?.email}
-                helperText={getError(allValues, 'email')}
+                error={getError(allValues, 'description') || false}
+                label="Description"
+                value={allValues?.description}
+                helperText={getError(allValues, 'description')}
                 fullWidth
-                onChange={(event) => { onChangeHandler(event, 'email'); }}
-                onBlur={(event) => { onBlurHandler(event, 'email'); }}
+                onChange={(event) => { onChangeHandler(event, 'description'); }}
+                onBlur={(event) => { onBlurHandler(event, 'description'); }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -64,39 +64,19 @@ const AddDialog = (props) => {
                 }}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <TextField
-                error={getError(allValues, 'password') || false}
-                label="Password"
-                type="password"
-                helperText={getError(allValues, 'password')}
-                value={allValues?.password}
+                error={getError(allValues, 'status') || false}
+                label="Status"
+                value={allValues?.status}
+                helperText={getError(allValues, 'status')}
                 fullWidth
-                onChange={(event) => { onChangeHandler(event, 'password'); }}
-                onBlur={(event) => { onBlurHandler(event, 'password'); }}
+                onChange={(event) => { onChangeHandler(event, 'status'); }}
+                onBlur={(event) => { onBlurHandler(event, 'status'); }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <Visibility />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                error={getError(allValues, 'confirmPassword') || false}
-                label="Confirm Password"
-                type="password"
-                helperText={getError(allValues, 'confirmPassword')}
-                value={allValues?.confirmPassword}
-                fullWidth
-                onChange={(event) => { onChangeHandler(event, 'confirmPassword'); }}
-                onBlur={(event) => { onBlurHandler(event, 'confirmPassword'); }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Visibility />
+                      <PersonIcon />
                     </InputAdornment>
                   ),
                 }}
@@ -105,7 +85,7 @@ const AddDialog = (props) => {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose}>Cancel</Button>
+          <Button onClick={() => { onClose('addDialog'); }}>Cancel</Button>
           <Button
             onClick={onSubmit}
             disabled={hasErrors(allValues?.errors) || !isTouched(allValues?.touched)}
