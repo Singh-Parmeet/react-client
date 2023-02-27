@@ -242,11 +242,30 @@ const TraineeList = (props) => {
     }
   };
 
-  const listHandler = async () => {
+  // const listHandler = async () => {
+  //   try {
+  //     skip = limit * page;
+  //     setTraineesData({ ...traineesData, traineeLoader: true });
+  //     const { data, total } = await callApi('form/cron/', 'get', {}, { skip, limit });
+  //     setTraineesData({
+  //       ...traineesData, trainees: data, traineeLoader: false, count: total,
+  //     });
+  //   } catch (err) {
+  //     setTraineesData({ ...traineesData, traineeLoader: false });
+  //   }
+  // };
+
+  const list = async (param) => {
     try {
+      let url = 'form';
       skip = limit * page;
-      setTraineesData({ ...traineesData, traineeLoader: true });
-      const { data, total } = await callApi('form/cron/', 'get', {}, { skip, limit });
+      if (traineesData.length === 0) {
+        setTraineesData({ ...traineesData, traineeLoader: true });
+      }
+      if (param) {
+        url += param;
+      }
+      const { data, total } = await callApi(url, 'get', {}, { skip, limit });
       setTraineesData({
         ...traineesData, trainees: data, traineeLoader: false, count: total,
       });
@@ -256,15 +275,18 @@ const TraineeList = (props) => {
   };
 
   useEffect(() => {
+    list();
+  }, []);
+
+  useEffect(() => {
     const intervalId = setInterval(() => {
-      listHandler();
+      list('/cron');
     }, 60000);
 
     return () => {
       clearInterval(intervalId);
     };
   }, [skip, page, dialog]);
-  console.log('>>>>>>>>>>..formValues', formValues);
   return (
     <>
       <Button variant="outlined" onClick={handleAddDialogOpen}>
